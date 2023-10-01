@@ -1406,19 +1406,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[F1] - track unit
+  m_text: '[q] - solo damage
 
-    [F2] - untrack unit
+    [w] - area damage with cast time
 
-    [q] - solo damage
+    [e] - area
+    heal
 
-    [w]
-    - area damage with cast time
-
-    [e] - area heal
-
-    [Mouse scroll] - change
-    camera height'
+    [Mouse scroll] - change camera height'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1445,7 +1440,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.2
+  m_fontSize: 31.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
