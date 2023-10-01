@@ -1,0 +1,122 @@
+{
+    "name": "HeroInput",
+    "maps": [
+        {
+            "name": "Common",
+            "id": "46aebcdc-4f20-4097-a66f-ab2c65720400",
+            "actions": [
+                {
+                    "name": "StopAction",
+                    "type": "Button",
+                    "id": "d6a6a6b3-59d4-4344-9462-04ead4c81308",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "32f7309d-961a-4a68-9931-cc7b399e5f49",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "AbilitiesHotKeys",
+            "id": "1bf33ea5-afc3-4b7a-848f-51f8b7eb9d80",
+            "actions": [
+                {
+                    "name": "Use1",
+                    "type": "Button",
+                    "id": "8b53ab07-4cdb-4281-9cf3-1e5f9e9a8eb5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Use2",
+                    "type": "Button",
+                    "id": "015fc725-df2c-4531-ac12-d65967bafffd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Use3",
+                    "type": "Button",
+                    "id": "b7453304-f40c-4e1e-9168-26b0b04cbee0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Use4",
+                    "type": "Button",
+                    "id": "9ea0aa50-28db-4c1e-a21a-3246719545fa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d46d8e47-974a-4444-88c1-718b3481cd13",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f55f6433-07de-4a45-ad9f-396d79c69d51",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d6b0c77-5110-4f51-8d25-fd5de92d81c6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e3ddf471-bdf4-4c9b-b1f2-120979f9a033",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
