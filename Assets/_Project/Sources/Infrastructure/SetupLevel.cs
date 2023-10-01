@@ -1,12 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 using MadeNPlayShared;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace GOBA
@@ -41,7 +39,7 @@ namespace GOBA
             SpawnHeroes(terrain.Spawnpoints, lobbyData.SessionTeams);
 
             var spawnPosition = terrain.Spawnpoints.FirstOrDefault(x => x.Id == 1).transform.position;
-            SpawnTestUnits(spawnPosition + new Vector3(2,0,2));
+            SpawnTestUnits(spawnPosition + new Vector3(2, 0, 2));
         }
 
         private void SpawnTestUnits(Vector3 center)
