@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace MadeNPlayShared
+namespace GOBA.Network
 {
     [Serializable]
     public struct NetworkUser : INetworkSerializable
