@@ -1,4 +1,4 @@
-﻿namespace MadeNPlayShared
+﻿namespace GOBA.Network
 {
     public enum UserState
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MadeNPlayShared
+namespace GOBA.Network
 {
     public class LobbyData
     {
