@@ -7,8 +7,8 @@ namespace GOBA
     [Serializable]
     public class Armor
     {
-        private float _reduceMultiplier;
-        private Dictionary<DamageType, Func<float, float>> _actions;
+        private readonly float _reduceMultiplier;
+        private readonly Dictionary<DamageType, Func<float, float>> _actions;
 
         public Armor()
         {

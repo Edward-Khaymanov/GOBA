@@ -9,7 +9,7 @@ namespace GOBA
     public abstract class Unit : NetworkBehaviour, IMove, IDamage, IHeal
     {
         [SerializeField] private UnitCanvas _unitCanvas;
-        
+
         protected NavMeshAgent _navigationAgent;
 
 

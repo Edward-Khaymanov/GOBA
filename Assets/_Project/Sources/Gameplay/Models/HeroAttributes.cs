@@ -18,7 +18,7 @@ namespace GOBA
             Intelligence = intelligence;
         }
 
-        [field: SerializeField] public float Agility {  get; private set; }
+        [field: SerializeField] public float Agility { get; private set; }
         [field: SerializeField] public float Strength { get; private set; }
         [field: SerializeField] public float Intelligence { get; private set; }
     }
