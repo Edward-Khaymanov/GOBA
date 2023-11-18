@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +13,7 @@ namespace GOBA
 
         private Unit _target;
         private UnitAsset _targetAsset;
-        private bool _targetIsHero;
+        private readonly bool _targetIsHero;
 
 
         private void Update()

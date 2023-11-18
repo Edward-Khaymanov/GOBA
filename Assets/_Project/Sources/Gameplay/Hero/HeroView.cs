@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,10 +6,10 @@ namespace GOBA
 {
     public class HeroView : MonoBehaviour
     {
-        private Animator _animator; 
-        private AnimatorOverrideController _overrideAnimator; 
-        private List<KeyValuePair<AnimationClip, AnimationClip>> _overrides; 
-        
+        private Animator _animator;
+        private AnimatorOverrideController _overrideAnimator;
+        private List<KeyValuePair<AnimationClip, AnimationClip>> _overrides;
+
         public void Init(UnitView unitView)
         {
             Instantiate(unitView, transform);

@@ -1,10 +1,10 @@
 ﻿#if UNITY_EDITOR
 
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Linq;
 
 namespace GOBA
 {
@@ -13,7 +13,7 @@ namespace GOBA
     {
         private IList<Type> _types;
         private string[] _typesName;
-        private string _abilityPropertyName = nameof(AbilityData.Ability);
+        private readonly string _abilityPropertyName = nameof(AbilityData.Ability);
         private string _currentTypeName;
         private bool _selectStarted;
         private bool _errorShowing;

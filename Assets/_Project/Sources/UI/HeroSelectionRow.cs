@@ -7,7 +7,7 @@ namespace GOBA
     {
         [SerializeField] private LayoutElement _layoutElement;
         [SerializeField] private HorizontalLayoutGroup _layoutGroup;
-        
+
         public void SetHeight(float value)
         {
             _layoutElement.preferredHeight = value;
