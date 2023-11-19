@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 
 namespace GOBA
 {
-    public class HeroInputController
+    public class InputSystemHeroController : IHeroInput
     {
         private readonly HeroInput _inputActions;
 
-        public HeroInputController()
+        public InputSystemHeroController()
         {
             _inputActions = new HeroInput();
         }
@@ -17,10 +17,9 @@ namespace GOBA
 
         public void Enable()
         {
-            _inputActions.AbilitiesHotKeys.Use1.performed += (ctx) => AbilityUse(ctx, 1);
-            _inputActions.AbilitiesHotKeys.Use2.performed += (ctx) => AbilityUse(ctx, 2);
-            _inputActions.AbilitiesHotKeys.Use3.performed += (ctx) => AbilityUse(ctx, 3);
-            //_inputActions.AbilitiesHotKeys.Use4.performed += (ctx) => AbilityUse(ctx, 4);
+            _inputActions.AbilitiesHotKeys.Use1.performed += (ctx) => AbilityUse(ctx, 0);
+            _inputActions.AbilitiesHotKeys.Use2.performed += (ctx) => AbilityUse(ctx, 1);
+            _inputActions.AbilitiesHotKeys.Use3.performed += (ctx) => AbilityUse(ctx, 2);
             _inputActions.Common.StopAction.performed += StopAction;
 
             _inputActions.Enable();
@@ -30,12 +29,10 @@ namespace GOBA
         {
             _inputActions.Disable();
 
-            _inputActions.AbilitiesHotKeys.Use1.performed -= (ctx) => AbilityUse(ctx, 1);
-            _inputActions.AbilitiesHotKeys.Use2.performed -= (ctx) => AbilityUse(ctx, 2);
-            _inputActions.AbilitiesHotKeys.Use3.performed -= (ctx) => AbilityUse(ctx, 3);
-            //_inputActions.AbilitiesHotKeys.Use4.performed -= (ctx) => AbilityUse(ctx, 4);
+            _inputActions.AbilitiesHotKeys.Use1.performed -= (ctx) => AbilityUse(ctx, 0);
+            _inputActions.AbilitiesHotKeys.Use2.performed -= (ctx) => AbilityUse(ctx, 1);
+            _inputActions.AbilitiesHotKeys.Use3.performed -= (ctx) => AbilityUse(ctx, 2);
             _inputActions.Common.StopAction.performed -= StopAction;
-
         }
 
         private void StopAction(InputAction.CallbackContext context)

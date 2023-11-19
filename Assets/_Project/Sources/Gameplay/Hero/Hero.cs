@@ -15,7 +15,7 @@ namespace GOBA
 
         private bool _isInitialized;
         private List<AbilityBase> _abilities;
-        private HeroInputController _inputController;
+        private IHeroInput _input;
         private CancellationTokenSource _abilityCancelationTokenSource;
         private HeroBaseState _currentState;
         private Dictionary<Type, HeroBaseState> _states;
@@ -36,7 +36,7 @@ namespace GOBA
 
         private void OnDisable()
         {
-            _inputController.Disable();
+            _input.Disable();
         }
 
         public void Constructor(int heroId, int teamId)
@@ -57,8 +57,8 @@ namespace GOBA
         private void LocalConstructor()
         {
             _abilityTargetSelector.Constructor(Camera.main);
-            _inputController.AbilityRequested += OnAbilityRequested;
-            _inputController.Enable();
+            _input.AbilityRequested += OnAbilityRequested;
+            _input.Enable();
             _isInitialized = true;
         }
 
@@ -70,14 +70,14 @@ namespace GOBA
             Attributes = hero.BaseAttributes;
 
             _view.Init(hero.Skin);
-            _inputController = new HeroInputController();
+            _input = new InputSystemHeroController();
             _abilityCancelationTokenSource = new CancellationTokenSource();
             _states = new Dictionary<Type, HeroBaseState>()
             {
                 { typeof(IdleState), new IdleState(this) },
-                { typeof(MoveState), new MoveState(this, _navigationAgent, _inputController) },
+                { typeof(MoveState), new MoveState(this, _navigationAgent, _input) },
                 { typeof(AttackState), new AttackState(this) },
-                { typeof(AbilityCastingState), new AbilityCastingState(this, _inputController) },
+                { typeof(AbilityCastingState), new AbilityCastingState(this, _input) },
                 { typeof(DeadState), new DeadState(this) },
             };
             _currentState = _states[typeof(IdleState)];
@@ -161,11 +161,11 @@ namespace GOBA
 
         private void OnAbilityRequested(int abilityIndex)
         {
-            CancelAbility();
-            UseAbility(abilityIndex - 1, _abilityCancelationTokenSource.Token).Forget();//////////////
+            TryCancelAbility();
+            UseAbility(abilityIndex, _abilityCancelationTokenSource.Token).Forget();
         }
 
-        public void CancelAbility()
+        public void TryCancelAbility()
         {
             if (CurrentAbitity == null)
                 return;
