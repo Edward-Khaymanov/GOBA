@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GOBA
 {
-    public class Terrain : NetworkBehaviour
+    public class Level : NetworkBehaviour
     {
         [field: SerializeField] public List<TeamSpawnpoint> Spawnpoints { get; private set; }
     }
