@@ -12,7 +12,7 @@ namespace GOBA
     public class SetupLevel : NetworkBehaviour
     {
         [SerializeField] public Hero _heroTemplate;
-        [SerializeField] public Terrain _terrainTemplate;
+        [SerializeField] public Level _terrainTemplate;
         [SerializeField] public HeroSelectionMenu _heroSelectionMenu;
 
         public string CurrentTime => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
