@@ -10,28 +10,31 @@ namespace GOBA
     public class Startup : MonoBehaviour
     {
         [SerializeField] private SetupLevel _setupLevelTemplate;
-        [SerializeField] private bool _loadFast;
+        [SerializeField] private bool _loadDemo;
 
-        private async void Start()
+        private void Start()
         {
-            UnitAssetProvider.Load();
-            if (_loadFast)
-            {
-                DontDestroyOnLoad(gameObject);
-                new ConnectionManager().StartHost(CONSTANTS.DEFAULT_PORT);
-                await SceneManager.LoadSceneAsync(CONSTANTS.GAME_SCENE_INDEX, LoadSceneMode.Single);
+            UnitAssetProvider.Initialize();
+
+            if (_loadDemo)
+                StartDemo().Forget();
+            else
                 StartGame();
-                Destroy(gameObject);
-                return;
-            }
-            SceneManager.LoadScene(CONSTANTS.MAIN_MENU_SCENE_INDEX);
         }
 
         private void StartGame()
         {
-            var setLevel = Instantiate(_setupLevelTemplate);
-            setLevel.NetworkObject.Spawn();
+            SceneManager.LoadScene(CONSTANTS.MAIN_MENU_SCENE_INDEX);
+        }
 
+        private async UniTaskVoid StartDemo()
+        {
+            DontDestroyOnLoad(gameObject);
+            new ConnectionManager().StartHost(CONSTANTS.DEFAULT_PORT);
+            await SceneManager.LoadSceneAsync(CONSTANTS.GAME_SCENE_INDEX, LoadSceneMode.Single);
+
+            var setupLevel = Instantiate(_setupLevelTemplate);
+            setupLevel.NetworkObject.Spawn();
 
             var teams = new List<SessionTeam>()
             {
@@ -52,16 +55,12 @@ namespace GOBA
                 }
             };
 
-
-
             teams[0].Users.Add(users[0]);
 
-            //teams[0].Users.Add(users[1]);
-
             var lobbyDataTest = new LobbyData(Guid.NewGuid(), 10, users, teams);
-            setLevel.SetupGame(lobbyDataTest).Forget();
+            setupLevel.SetupGame(lobbyDataTest).Forget();
+
+            Destroy(gameObject);
         }
-
-
     }
 }

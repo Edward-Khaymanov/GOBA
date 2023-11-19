@@ -6,6 +6,18 @@ namespace GOBA
 {
     public static class UnitAssetProvider
     {
+        private static Dictionary<int, IResourceLocation> _unitLocations;
+
+        public static void Initialize()
+        {
+            _unitLocations = new Dictionary<int, IResourceLocation>();
+            var units = GetLocations<UnitAsset>("unit");
+            foreach (var location in units)
+            {
+                var asset = LoadByLocation<UnitAsset>(location);
+                _unitLocations.Add(asset.Id, location);
+            }
+        }
 
         public static List<UnitAsset> GetUnits()
         {
@@ -79,45 +91,14 @@ namespace GOBA
             return catalogHandle.Result;
         }
 
-        private static Dictionary<int, IResourceLocation> _unitLocations;
-        public static void Load()
-        {
-            _unitLocations = new Dictionary<int, IResourceLocation>();
-            var units = GetLocations<UnitAsset>("unit");
-            foreach (var location in units)
-            {
-                var asset = LoadByLocation<UnitAsset>(location);
-                _unitLocations.Add(asset.Id, location);
-            }
-        }
-
-
         private static List<AbilityData> CopyAbilities(List<AbilityData> abilities)
         {
             var result = new List<AbilityData>();
-            //var settings = new JsonSerializerSettings()
-            //{
-            //    Formatting = Formatting.Indented,
-            //    //MissingMemberHandling = MissingMemberHandling.Error,
-            //    TypeNameHandling = TypeNameHandling.Objects,
-            //};
-
-            //for (int i = 0; i < abilities.Count; i++)
-            //{
-            //    var abilityData = abilities[i];
-            //    var newData = UnityEngine.Object.Instantiate(abilityData);
-            //    abilities[i] = newData;
-            //}
 
             foreach (var abilityData in abilities)
             {
                 var newData = UnityEngine.Object.Instantiate(abilityData);
                 result.Add(newData);
-                //abilityData = newData;
-                //var json = JsonConvert.SerializeObject(abilityData.Ability, settings);
-                //var newAb = JsonConvert.DeserializeObject<AbilityBase>(json);
-                ////var newData = new AbilityData
-                //abilityData.Ability = newAb;
             }
 
             return result;
