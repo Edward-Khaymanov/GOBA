@@ -7,9 +7,9 @@ namespace GOBA
     {
         private bool _isMoving;
         private readonly NavMeshAgent _navMeshAgent;
-        private readonly HeroInputController _inputController;
+        private readonly IHeroInput _inputController;
 
-        public MoveState(Hero hero, NavMeshAgent navMeshAgent, HeroInputController inputController) : base(hero)
+        public MoveState(Hero hero, NavMeshAgent navMeshAgent, IHeroInput inputController) : base(hero)
         {
             _navMeshAgent = navMeshAgent;
             _inputController = inputController;

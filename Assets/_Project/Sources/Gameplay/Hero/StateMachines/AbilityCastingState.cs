@@ -4,9 +4,9 @@ namespace GOBA
 {
     public class AbilityCastingState : HeroBaseState
     {
-        private readonly HeroInputController _inputController;
+        private readonly IHeroInput _inputController;
 
-        public AbilityCastingState(Hero hero, HeroInputController inputController) : base(hero)
+        public AbilityCastingState(Hero hero, IHeroInput inputController) : base(hero)
         {
             _inputController = inputController;
         }
@@ -32,7 +32,7 @@ namespace GOBA
 
         private void StopCasting()
         {
-            _hero.CancelAbility();
+            _hero.TryCancelAbility();
             _hero.SwitchState<IdleState>();
         }
     }
