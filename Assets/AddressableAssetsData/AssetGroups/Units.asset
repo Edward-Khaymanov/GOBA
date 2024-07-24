@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: Units
   m_EditorClassIdentifier: 
   m_GroupName: Units
-  m_Data:
-    m_SerializedData: []
   m_GUID: dd31c4757b8c2ad44b5809d570ad478f
   m_SerializeEntries:
-  - m_GUID: 7b9f9e88af3711c43b195eb19e968a9c
-    m_Address: Shadow
+  - m_GUID: b2237a36cc5b3f144a23d77a419972d0
+    m_Address: TestUnits/TrainingHero
     m_ReadOnly: 0
     m_SerializedLabels:
     - unit
@@ -29,15 +27,9 @@ MonoBehaviour:
     m_SerializedLabels:
     - unit
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2237a36cc5b3f144a23d77a419972d0
-    m_Address: TestUnits/TrainingHero
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - unit
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1a092a9b965f2e74c9a16ad8a10609ca, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 469333dd32f390c44948ae4665e3ed3c, type: 2}
     - {fileID: 11400000, guid: b0374ac07762e0148bff6754e960a732, type: 2}
+    - {fileID: 11400000, guid: 469333dd32f390c44948ae4665e3ed3c, type: 2}
