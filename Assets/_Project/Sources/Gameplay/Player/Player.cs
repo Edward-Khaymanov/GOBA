@@ -1,3 +1,4 @@
+using MapModCore;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,63 +7,21 @@ namespace GOBA
     public class Player : MonoBehaviour
     {
         //public int _ownerUserId;
-        private Unit _selectedUnit;
-        private PlayerInput _playerInput;
-        private PlayerCamera _playerCamera;
         private PlayerUI _playerUI;
+        public IUnit SelectedUnit { get; private set; }
+        public List<IUnit> SelectedUnits { get; private set; }//unit group ג האכüםוירול?
 
-        public List<Unit> _ownedUnits = new List<Unit>();
-
-        public void Init()
+        public void Init(PlayerUI playerUI)
         {
-            _playerCamera = FindObjectOfType<PlayerCamera>();
-            _playerCamera.Init();
-
-            _playerInput = FindObjectOfType<PlayerInput>();
-            _playerInput.Init(_playerCamera.Camera);
-
-            _playerUI = FindObjectOfType<PlayerUI>();
-
-            SubscribeToEvents();
+            _playerUI = playerUI;
+            SelectedUnits = new List<IUnit>();
         }
 
-        public void AddUnit(Unit unit)
+        public void SelectUnit(IUnit unit)
         {
-            _ownedUnits.Add(unit);
-        }
-
-        public void SelectUnit(Unit unit)
-        {
-            if (_ownedUnits.Contains(unit))
-                _selectedUnit = unit;
-
+            SelectedUnit = unit;
+            unit.EnableInput();
             _playerUI.OnSelectUnit(unit);
-        }
-
-        private void Track()
-        {
-            _playerCamera.Track(_selectedUnit.transform);
-        }
-
-        private void MoveSelected(Vector3 targetPoint)
-        {
-            _selectedUnit.Move(targetPoint);
-        }
-
-        private void SubscribeToEvents()
-        {
-            _playerInput.Moving += MoveSelected;
-            _playerInput.Scroling += _playerCamera.ChangeHeight;
-            _playerInput.Tracking += Track;
-            _playerInput.Untracking += _playerCamera.Untrack;
-        }
-
-        private void OnDisable()
-        {
-            _playerInput.Moving -= _selectedUnit.Move;
-            _playerInput.Scroling -= _playerCamera.ChangeHeight;
-            _playerInput.Tracking -= Track;
-            _playerInput.Untracking -= _playerCamera.Untrack;
         }
     }
 }

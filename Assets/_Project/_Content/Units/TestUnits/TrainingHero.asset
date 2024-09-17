@@ -15,7 +15,7 @@ MonoBehaviour:
   <Id>k__BackingField: -1
   <Name>k__BackingField: test
   <Icon>k__BackingField: {fileID: 0}
-  <Skin>k__BackingField: {fileID: 3927935299648725578, guid: 7a865d1cb3b93674da10c9828f43eedb,
+  <Model>k__BackingField: {fileID: 3927935299648725578, guid: 7a865d1cb3b93674da10c9828f43eedb,
     type: 3}
   <BaseStats>k__BackingField:
     <Healf>k__BackingField:
@@ -28,8 +28,3 @@ MonoBehaviour:
       <Max>k__BackingField: 200
     <AttackRange>k__BackingField: 0
     <BaseAttackSpeed>k__BackingField: 0
-  <BaseAttributes>k__BackingField:
-    <Agility>k__BackingField: 0
-    <Strength>k__BackingField: 0
-    <Intelligence>k__BackingField: 0
-  <Abilities>k__BackingField: []

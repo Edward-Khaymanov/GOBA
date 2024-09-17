@@ -8,6 +8,11 @@ namespace GOBA
         {
         }
 
+        public override void CancelAction()
+        {
+
+        }
+
         public override void Enter()
         {
 

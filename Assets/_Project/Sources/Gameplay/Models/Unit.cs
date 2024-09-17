@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MapModCore;
+using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,12 +8,11 @@ using UnityEngine.AI;
 namespace GOBA
 {
     [SelectionBase]
-    public abstract class Unit : NetworkBehaviour, IMove, IDamage, IHeal
+    public abstract class Unit : NetworkBehaviour, IUnit
     {
         [SerializeField] private UnitCanvas _unitCanvas;
 
         protected NavMeshAgent _navigationAgent;
-
 
         public event Action OnDamageTaken;
         public event Action<float, float> OnHealfChanged;
@@ -21,18 +22,25 @@ namespace GOBA
         public UnitStats Stats { get; private set; }
         public bool IsNeutral => TeamId == CONSTANTS.NEUTRAL_TEAM_ID;
 
+        public Transform Transform => transform;
+        public NetworkBehaviour NetworkBehaviour => this;
 
         protected virtual void Awake()
         {
             _navigationAgent = GetComponent<NavMeshAgent>();
         }
 
-        private void OnEnable()
+        protected virtual void Update()
+        {
+
+        }
+
+        protected virtual void OnEnable()
         {
             OnDamageTaken += TryKill;
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             OnDamageTaken -= TryKill;
             Stats.Healf.CurrentChanged -= (current) => _unitCanvas.OnHealfChanged(current, Stats.Healf.Max);
@@ -73,9 +81,29 @@ namespace GOBA
             MyLogger.Log("i am dead", LogLevel.Warning);
         }
 
-        public void TakeHeal(float amount)
+        public virtual void EnableInput()
         {
-            Stats.Healf.Add(amount);
         }
+
+        public virtual void DisableInput()
+        {
+        }
+
+        public virtual void InitBindings()
+        {
+
+        }
+
+        public virtual void MoveTo(Vector3 position)
+        {
+
+        }
+
+        public virtual void UseAbility(int abilityIndex)
+        {
+
+        }
+
+        public abstract void AddCommand(ICommand command);
     }
 }

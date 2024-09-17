@@ -16,7 +16,7 @@ MonoBehaviour:
   <Name>k__BackingField: Ybot
   <Icon>k__BackingField: {fileID: 21300000, guid: 52fc3db4830a3c0489c56b260cfec17f,
     type: 3}
-  <Skin>k__BackingField: {fileID: 3927935299648725578, guid: 7a865d1cb3b93674da10c9828f43eedb,
+  <Model>k__BackingField: {fileID: 3927935299648725578, guid: 7a865d1cb3b93674da10c9828f43eedb,
     type: 3}
   <BaseStats>k__BackingField:
     <Healf>k__BackingField:
@@ -29,11 +29,3 @@ MonoBehaviour:
       <Max>k__BackingField: 200
     <AttackRange>k__BackingField: 0
     <BaseAttackSpeed>k__BackingField: 0
-  <BaseAttributes>k__BackingField:
-    <Agility>k__BackingField: 0
-    <Strength>k__BackingField: 0
-    <Intelligence>k__BackingField: 0
-  <Abilities>k__BackingField:
-  - {fileID: 11400000, guid: 1e4dd339fb1334a49a1896bf8a2a4384, type: 2}
-  - {fileID: 11400000, guid: 95c2cded465a2e24890871972fbeb6eb, type: 2}
-  - {fileID: 11400000, guid: dd643974ee67a3b4aa261eafa149e279, type: 2}

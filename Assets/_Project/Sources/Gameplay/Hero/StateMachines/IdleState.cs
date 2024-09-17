@@ -9,9 +9,14 @@ namespace GOBA
         {
         }
 
+        public override void CancelAction()
+        {
+
+        }
+
         public override void Enter()
         {
-            _hero.View.SetTrigger(HeroAnimatorController.Params.IdleTrigger);
+            _hero.View.PlayState(HeroAnimatorController.States.Idle);
         }
 
         public override void Exist()

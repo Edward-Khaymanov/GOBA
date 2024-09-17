@@ -4,22 +4,24 @@ namespace GOBA
 {
     public class AbilityCastingState : HeroBaseState
     {
-        private readonly IHeroInput _inputController;
-
-        public AbilityCastingState(Hero hero, IHeroInput inputController) : base(hero)
+        public AbilityCastingState(Hero hero) : base(hero)
         {
-            _inputController = inputController;
+
+        }
+
+        public override void CancelAction()
+        {
+            StopCasting();
         }
 
         public override void Enter()
         {
-            _hero.View.SetTrigger(HeroAnimatorController.Params.AbilityUseTrigger);
-            _inputController.StopActionRequsted += StopCasting;
+            _hero.View.PlayState(HeroAnimatorController.States.AbilityUse);
         }
 
         public override void Exist()
         {
-            _inputController.StopActionRequsted -= StopCasting;
+
         }
 
         public override void Move(Vector3 position)

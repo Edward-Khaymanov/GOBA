@@ -48,7 +48,7 @@ namespace GOBA
             foreach (var hero in heroes)
             {
                 var copy = UnityEngine.Object.Instantiate(hero);
-                copy.Abilities = CopyAbilities(hero.Abilities);
+                //copy.Abilities = CopyAbilities(hero.Abilities);
                 result.Add(copy);
             }
 
@@ -60,7 +60,7 @@ namespace GOBA
             var location = _unitLocations[id];
             var asset = LoadByLocation<HeroAsset>(location);
             var copy = UnityEngine.Object.Instantiate(asset);
-            copy.Abilities = CopyAbilities(asset.Abilities);
+            //copy.Abilities = CopyAbilities(asset.Abilities);
             return copy;
         }
 

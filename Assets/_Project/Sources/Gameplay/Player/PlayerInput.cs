@@ -1,59 +1,102 @@
-using System;
+using GOBA.Assets._Project.Sources._Test;
 using UnityEngine;
 
 namespace GOBA
 {
     public class PlayerInput : MonoBehaviour
     {
-        [SerializeField] private LayerMask _moveMask;
+        //private LayerMask _terrainMask;
 
-        private Camera _camera;
+        private bool _initialized;
+        private PlayerCamera _playerCamera;
+        private Player _player;
+        private RaycastHit[] _mouseHits;
+        private int _mouseHitsCount;
 
-        public event Action<Vector3> Moving;
-        public event Action Tracking;
-        public event Action Untracking;
-        public event Action<float> Scroling;
-
-        public void Init(Camera playerCamera)
+        public void Init(PlayerCamera playerCamera, Player player)
         {
-            _camera = playerCamera;
+            _playerCamera = playerCamera;
+            _player = player;
+            _initialized = true;
+            _mouseHits = new RaycastHit[100];
         }
-
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(1) && GetMovePoint(out Vector3 movePoint))
-            {
-                Moving?.Invoke(movePoint);
-            }
+            if (_initialized == false)
+                return;
+
+            RaycastMousePosition();
 
             if (Input.mouseScrollDelta.y != 0)
             {
-                Scroling?.Invoke(Input.mouseScrollDelta.y);
+                _playerCamera.ChangeHeight(Input.mouseScrollDelta.y);
             }
 
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                Tracking?.Invoke();
+                _playerCamera.Track(_player.SelectedUnit.Transform);
             }
 
             if (Input.GetKeyDown(KeyCode.F2))
             {
-                Untracking?.Invoke();
+                _playerCamera.Untrack();
+            }
+
+            if (Utils.IsMouseOverUI() == false)
+            {
+                HandleMovement();
             }
         }
 
-        private bool GetMovePoint(out Vector3 movePoint)
+        private void HandleMovement()
         {
-            movePoint = Vector3.zero;
+            if (Input.GetMouseButtonDown(1))
+            {
+                var position = GetMovePosition();
+                if (position != default)
+                {
+                    foreach (var unit in _player.SelectedUnits)
+                    {
+                        var command = new MoveCommand(unit, position);
+                        unit.AddCommand(command);
+                        //unit.MoveTo(position);
+                    }
+                }
+            }
+        }
+
+        private Vector3 GetMovePosition()
+        {
+            for (int i = 0; i < _mouseHitsCount; i++)
+            {
+                var hit = _mouseHits[i];
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer(nameof(CONSTANTS.Layers.Terrain)))
+                {
+                    return hit.point;
+                }
+            }
+            return default;
+        }
+
+        //private bool GetMovePoint(out Vector3 movePoint)
+        //{
+        //    movePoint = Vector3.zero;
+        //    var mouseScreenPosition = Input.mousePosition;
+        //    var ray = _playerCamera.Camera.ScreenPointToRay(mouseScreenPosition);
+
+        //    if (Physics.Raycast(ray, out RaycastHit hit, 200f, _terrainMask) == false)
+        //        return false;
+
+        //    movePoint = hit.point;
+        //    return true;
+        //}
+
+        private void RaycastMousePosition()
+        {
             var mouseScreenPosition = Input.mousePosition;
-            var ray = _camera.ScreenPointToRay(mouseScreenPosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 200f, _moveMask) == false)
-                return false;
-
-            movePoint = hit.point;
-            return true;
+            var ray = _playerCamera.Camera.ScreenPointToRay(mouseScreenPosition);
+            _mouseHitsCount = Physics.RaycastNonAlloc(ray, _mouseHits, 100f);
         }
     }
 }

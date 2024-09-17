@@ -146,7 +146,7 @@ namespace GOBA
         {
             var setLevel = Instantiate(_setupLevelTemplate);
             setLevel.NetworkObject.Spawn();
-            setLevel.SetupGame(_lobbyData);
+            setLevel.SetupGame(_lobbyData, false);
         }
     }
 }

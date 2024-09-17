@@ -1,4 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
+using GOBA.Assets._Project.Sources._Test;
+using MapModCore;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,87 +12,66 @@ namespace GOBA
     public class Hero : Unit
     {
         [SerializeField] private HeroView _view;
-        [SerializeField] private AbilityTargetSelector _abilityTargetSelector;
+        //[SerializeField] private AbilityTargetSelector _abilityTargetSelector;
 
 
         private bool _isInitialized;
-        private List<AbilityBase> _abilities;
+        private List<IAbility> _abilities;
         private IHeroInput _input;
         private CancellationTokenSource _abilityCancelationTokenSource;
         private HeroBaseState _currentState;
         private Dictionary<Type, HeroBaseState> _states;
 
-
         public AbilityActive CurrentAbitity { get; private set; }
-        public HeroAttributes Attributes { get; private set; }
+        //public HeroAttributes Attributes { get; private set; }
         public HeroView View => _view;
 
-
-        private void Update()
+        protected override void Update()
         {
-            if (base.IsOwner == false || _isInitialized == false)
+            if (_isInitialized == false)
                 return;
 
             _currentState.Update();
         }
 
-        private void OnDisable()
-        {
-            _input.Disable();
-        }
-
-        public void Constructor(int heroId, int teamId)
+        public void Initialize(int heroId, int teamId)
         {
             Init(heroId, teamId);
-        }
+            InitAbilities(new[] { ABILITYLIST.GetAbility(1) });
 
-        [ClientRpc]
-        public void ConstructorClientRPC(int heroId, int teamId, ClientRpcParams rpc)
-        {
-            if (base.IsServer == false)
-                Init(heroId, teamId);
-
-            if (base.IsOwner)
-                LocalConstructor();
-        }
-
-        private void LocalConstructor()
-        {
-            _abilityTargetSelector.Constructor(Camera.main);
-            _input.AbilityRequested += OnAbilityRequested;
-            _input.Enable();
             _isInitialized = true;
         }
 
-        private void Init(int heroId, int teamId)
+        public void InitLocal(IHeroInput heroInput)
+        {
+            _input = heroInput;
+            //_input.SetAbilityCallback(OnAbilityRequestedRpc);
+            //_input.SetStopActionCallback(CancelActionRpc);
+        }
+
+        public void InitAbilities(IList<IAbility> abilities)
+        {
+            _abilities = new List<IAbility>();
+            _abilities.AddRange(abilities);
+        }
+
+        public void Init(int heroId, int teamId)
         {
             var hero = UnitAssetProvider.GetHero(heroId);
-            Init(heroId, teamId, hero.BaseStats);
-            InitAbilities(hero.Abilities);
-            Attributes = hero.BaseAttributes;
-
-            _view.Init(hero.Skin);
-            _input = new InputSystemHeroController();
+            base.Init(heroId, teamId, hero.BaseStats);
+            //Attributes = hero.BaseAttributes;
+            _view.Init();
             _abilityCancelationTokenSource = new CancellationTokenSource();
             _states = new Dictionary<Type, HeroBaseState>()
             {
                 { typeof(IdleState), new IdleState(this) },
-                { typeof(MoveState), new MoveState(this, _navigationAgent, _input) },
+                { typeof(MoveState), new MoveState(this, _navigationAgent) },
                 { typeof(AttackState), new AttackState(this) },
-                { typeof(AbilityCastingState), new AbilityCastingState(this, _input) },
+                { typeof(AbilityCastingState), new AbilityCastingState(this) },
                 { typeof(DeadState), new DeadState(this) },
             };
             _currentState = _states[typeof(IdleState)];
             _currentState.Enter();
-        }
-
-        private void InitAbilities(IList<AbilityData> abilitiesData)
-        {
-            _abilities = new List<AbilityBase>();
-            foreach (var abilityData in abilitiesData)
-            {
-                _abilities.Add(abilityData.Ability);
-            };
         }
 
         public void SwitchState<T>() where T : HeroBaseState
@@ -108,61 +89,73 @@ namespace GOBA
             _currentState.Move(position);
         }
 
-        public async UniTaskVoid UseAbility(int abilityIndex, CancellationToken cancellationToken)
+        public override void UseAbility(int abilityIndex)
+        {
+            UseAbility(abilityIndex, _abilityCancelationTokenSource.Token).Forget();
+        }
+
+        private async UniTaskVoid UseAbility(int abilityIndex, CancellationToken cancellationToken)
         {
             var abilityBase = _abilities[abilityIndex];
-            var abilityActive = abilityBase as AbilityActive;
+            var abilityActive = abilityBase as IAbilityActive;
             if (abilityActive.CanUse == false)
                 return;
 
-            CurrentAbitity = abilityActive;
-            await abilityActive.Activate();
+            //CurrentAbitity = abilityActive;
+            await abilityActive.Activate(this);
             //var particle = _view.PlayParticle(abilityActive.ActivateParticle, transform.position, transform);
             //_view.OverrideAnimation(HeroAnimatorController.OverrideClips.AbilityActivation, abilityActive.ActivateAnimation);
             //_view.StartAnimatorTrigger(HeroAnimatorController.Params.AbilityActivationTrigger);
             //var targetPoint = new Vector3();
 
 
-            var castData = await _abilityTargetSelector.Select(this, new[] { TeamId }, abilityActive.Data.TargettingData, cancellationToken);
+            //var castData = await _abilityTargetSelector.Select(this, new[] { TeamId }, abilityActive.Data.TargettingData, cancellationToken);
 
-            if (cancellationToken.IsCancellationRequested == false)
-            {
-                UseAbilityServerRpc(abilityIndex, castData);
-            }
+            //if (cancellationToken.IsCancellationRequested == false)
+            //{
+            //    UseAbilityServerRpc(abilityIndex, castData);
+            //}
 
-            _abilityCancelationTokenSource = new CancellationTokenSource();
-            CurrentAbitity = null;
+            //_abilityCancelationTokenSource = new CancellationTokenSource();
+            //CurrentAbitity = null;
         }
 
-        [ServerRpc]
-        private void UseAbilityServerRpc(int index, AbilityCastData castData)
+        //[ServerRpc]
+        //private void UseAbilityServerRpc(int index, AbilityCastData castData)
+        //{
+        //    UseAbilityServer(index, castData).Forget();
+        //}
+
+        //private async UniTaskVoid UseAbilityServer(int index, AbilityCastData castData)
+        //{
+        //    var abilityActive = _abilities[index] as IAbilityActive;
+
+        //    if (abilityActive.CanUse == false)
+        //        return;
+
+        //    SwitchState<AbilityCastingState>();
+        //    await abilityActive.Use(castData);
+        //    SwitchState<IdleState>();
+
+        //    //_view.OverrideAnimation(HeroAnimatorController.OverrideClips.AbilityUse, ability.UseAnimation);
+        //    //_view.SetTrigger(HeroAnimatorController.Params.AbilityUseTrigger);
+        //    //_view.SetTrigger(HeroAnimatorController.Params.AbilityUseEndTrigger);
+
+        //}
+
+        [Rpc(SendTo.Server)]
+        public void CancelActionRpc()
         {
-            UseAbilityServer(index, castData).Forget();
+            _currentState.CancelAction();
         }
 
-        private async UniTaskVoid UseAbilityServer(int index, AbilityCastData castData)
+        [Rpc(SendTo.Server)]
+        public void OnAbilityRequestedRpc(int abilityIndex)
         {
-            var abilityActive = _abilities[index] as AbilityActive;
-
-            if (abilityActive.CanUse == false)
-                return;
-
-            SwitchState<AbilityCastingState>();
-            await abilityActive.Use(castData);
-            SwitchState<IdleState>();
-
-            //_view.OverrideAnimation(HeroAnimatorController.OverrideClips.AbilityUse, ability.UseAnimation);
-            //_view.SetTrigger(HeroAnimatorController.Params.AbilityUseTrigger);
-            //_view.SetTrigger(HeroAnimatorController.Params.AbilityUseEndTrigger);
-
-        }
-
-
-
-        private void OnAbilityRequested(int abilityIndex)
-        {
-            TryCancelAbility();
-            UseAbility(abilityIndex, _abilityCancelationTokenSource.Token).Forget();
+            //TryCancelAbility();
+            var command = new UseAbilityCommand(this, abilityIndex);
+            AddCommand(command);
+            UseAbility(abilityIndex);
         }
 
         public void TryCancelAbility()
@@ -174,6 +167,11 @@ namespace GOBA
             _abilityCancelationTokenSource.Cancel();
             _abilityCancelationTokenSource = new CancellationTokenSource();
             CurrentAbitity = null;
+        }
+
+        public override void AddCommand(ICommand command)
+        {
+            command.Execute();
         }
     }
 }

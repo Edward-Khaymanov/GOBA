@@ -7,24 +7,21 @@ namespace GOBA
     {
         private bool _isMoving;
         private readonly NavMeshAgent _navMeshAgent;
-        private readonly IHeroInput _inputController;
 
-        public MoveState(Hero hero, NavMeshAgent navMeshAgent, IHeroInput inputController) : base(hero)
+        public MoveState(Hero hero, NavMeshAgent navMeshAgent) : base(hero)
         {
             _navMeshAgent = navMeshAgent;
-            _inputController = inputController;
         }
 
         public override void Enter()
         {
-            _inputController.StopActionRequsted += StopMove;
+
         }
 
         public override void Exist()
         {
             _isMoving = false;
             _navMeshAgent.ResetPath();
-            _inputController.StopActionRequsted -= StopMove;
         }
 
         public override void Move(Vector3 position)
@@ -33,7 +30,7 @@ namespace GOBA
             var path = new NavMeshPath();
             _navMeshAgent.CalculatePath(position, path);
             _navMeshAgent.SetPath(path);
-            _hero.View.SetTrigger(HeroAnimatorController.Params.RunTrigger);
+            _hero.View.PlayState(HeroAnimatorController.States.Move);
             _isMoving = true;
         }
 
@@ -51,6 +48,11 @@ namespace GOBA
         private void StopMove()
         {
             _hero.SwitchState<IdleState>();
+        }
+
+        public override void CancelAction()
+        {
+            StopMove();
         }
     }
 }

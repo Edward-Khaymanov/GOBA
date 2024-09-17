@@ -14,7 +14,13 @@ namespace GOBA
 
         private void Start()
         {
+            StartAsync().Forget();
+        }
+
+        private async UniTaskVoid StartAsync()
+        {
             UnitAssetProvider.Initialize();
+            await ABILITYLIST.Initialize();
 
             if (_loadDemo)
                 StartDemo().Forget();
@@ -58,7 +64,7 @@ namespace GOBA
             teams[0].Users.Add(users[0]);
 
             var lobbyDataTest = new LobbyData(Guid.NewGuid(), 10, users, teams);
-            setupLevel.SetupGame(lobbyDataTest).Forget();
+            setupLevel.SetupGame(lobbyDataTest, true).Forget();
 
             Destroy(gameObject);
         }

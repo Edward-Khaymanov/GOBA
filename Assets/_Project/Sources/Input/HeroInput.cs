@@ -32,7 +32,16 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
                     ""name"": ""StopAction"",
                     ""type"": ""Button"",
                     ""id"": ""d6a6a6b3-59d4-4344-9462-04ead4c81308"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""507f6fab-bae5-40a1-b007-ab653d202b40"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -49,6 +58,17 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
                     ""action"": ""StopAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23716bc2-f595-485c-9ddf-d791443840fa"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -60,7 +80,7 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
                     ""name"": ""Use1"",
                     ""type"": ""Button"",
                     ""id"": ""8b53ab07-4cdb-4281-9cf3-1e5f9e9a8eb5"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -146,6 +166,7 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
         // Common
         m_Common = asset.FindActionMap("Common", throwIfNotFound: true);
         m_Common_StopAction = m_Common.FindAction("StopAction", throwIfNotFound: true);
+        m_Common_RightClick = m_Common.FindAction("RightClick", throwIfNotFound: true);
         // AbilitiesHotKeys
         m_AbilitiesHotKeys = asset.FindActionMap("AbilitiesHotKeys", throwIfNotFound: true);
         m_AbilitiesHotKeys_Use1 = m_AbilitiesHotKeys.FindAction("Use1", throwIfNotFound: true);
@@ -220,11 +241,13 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Common;
     private List<ICommonActions> m_CommonActionsCallbackInterfaces = new List<ICommonActions>();
     private readonly InputAction m_Common_StopAction;
+    private readonly InputAction m_Common_RightClick;
     public struct CommonActions
     {
         private @HeroInput m_Wrapper;
         public CommonActions(@HeroInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @StopAction => m_Wrapper.m_Common_StopAction;
+        public InputAction @RightClick => m_Wrapper.m_Common_RightClick;
         public InputActionMap Get() { return m_Wrapper.m_Common; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -237,6 +260,9 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
             @StopAction.started += instance.OnStopAction;
             @StopAction.performed += instance.OnStopAction;
             @StopAction.canceled += instance.OnStopAction;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
         }
 
         private void UnregisterCallbacks(ICommonActions instance)
@@ -244,6 +270,9 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
             @StopAction.started -= instance.OnStopAction;
             @StopAction.performed -= instance.OnStopAction;
             @StopAction.canceled -= instance.OnStopAction;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
         }
 
         public void RemoveCallbacks(ICommonActions instance)
@@ -334,6 +363,7 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
     public interface ICommonActions
     {
         void OnStopAction(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
     public interface IAbilitiesHotKeysActions
     {

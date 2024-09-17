@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MapModCore;
+using UnityEngine;
 
 namespace GOBA
 {

@@ -468,6 +468,9 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1318,6 +1321,9 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1686,8 +1692,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8678090331729653857}
-  - component: {fileID: 6201814767829343369}
   - component: {fileID: 3927935299648725578}
+  - component: {fileID: 2263471205912902875}
+  - component: {fileID: 6201814767829343369}
   - component: {fileID: 4691336424561249067}
   m_Layer: 0
   m_Name: Y Bot
@@ -1714,27 +1721,6 @@ Transform:
   - {fileID: 1465481174628389146}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &6201814767829343369
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5751406676633213967}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 1f92fb72d59814641b1e708d1fe48954, type: 3}
-  m_Controller: {fileID: 9100000, guid: e11641537b8840f4fa7bf03d57711f92, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3927935299648725578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1747,6 +1733,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaef7b6f1d979ee4d8d267cb13092f6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2263471205912902875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751406676633213967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3247239158
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!95 &6201814767829343369
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751406676633213967}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1f92fb72d59814641b1e708d1fe48954, type: 3}
+  m_Controller: {fileID: 9100000, guid: 1c14868d71cbb0945bb0e733f226a011, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4691336424561249067
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@
         public static class States
         {
             public const string Idle = nameof(Idle);
-            public const string Running = nameof(Running);
+            public const string Move = nameof(Move);
             public const string AbilityActivation = nameof(AbilityActivation);
             public const string AbilityUse = nameof(AbilityUse);
         }

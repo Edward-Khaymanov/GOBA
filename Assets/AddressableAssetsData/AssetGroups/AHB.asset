@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: AHB
+  m_EditorClassIdentifier: 
+  m_GroupName: AHB
+  m_GUID: 0801413f856554b4f958e59fc5a5c211
+  m_SerializeEntries:
+  - m_GUID: 34cc687bdbca11742ae74d3984b1e76d
+    m_Address: ErikaDef
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - unit
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5169c6b5d67a6446b1dddf19da5ddc0
+    m_Address: CapsuleTemplate
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityProjectile
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7880c68b3187bf4e860ec4207668202
+    m_Address: FireBallData
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 1a092a9b965f2e74c9a16ad8a10609ca, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 6bf8e524cca370742bc5956d073e12d8, type: 2}
+    - {fileID: 11400000, guid: 4079557247f174c46ac887f5a1da1ba4, type: 2}

@@ -9,7 +9,16 @@
                     "name": "StopAction",
                     "type": "Button",
                     "id": "d6a6a6b3-59d4-4344-9462-04ead4c81308",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "507f6fab-bae5-40a1-b007-ab653d202b40",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -26,6 +35,17 @@
                     "action": "StopAction",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23716bc2-f595-485c-9ddf-d791443840fa",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -37,7 +57,7 @@
                     "name": "Use1",
                     "type": "Button",
                     "id": "8b53ab07-4cdb-4281-9cf3-1e5f9e9a8eb5",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

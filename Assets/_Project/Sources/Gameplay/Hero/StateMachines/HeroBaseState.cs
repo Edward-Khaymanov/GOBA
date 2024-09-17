@@ -12,5 +12,6 @@ namespace GOBA
         }
 
         public abstract void Move(Vector3 position);
+        public abstract void CancelAction();
     }
 }

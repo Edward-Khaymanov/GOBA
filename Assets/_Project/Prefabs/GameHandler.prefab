@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 23193604
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0
@@ -70,4 +71,6 @@ MonoBehaviour:
   _terrainTemplate: {fileID: 2476622069183275961, guid: 3be37d93d0186264794c3dd2bd7d7188,
     type: 3}
   _heroSelectionMenu: {fileID: 7035718235537175708, guid: 50c024eef4e3dad43aeedec4e6c156e5,
+    type: 3}
+  _playerNetworkInputTemplate: {fileID: 48870758844368631, guid: cd793879a54480c4bb2805bae56f4ddf,
     type: 3}

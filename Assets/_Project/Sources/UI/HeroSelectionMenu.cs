@@ -75,7 +75,7 @@ namespace GOBA
             }
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void SelectHeroServerRpc(int heroId, ServerRpcParams serverRpc = default)
         {
             ClientHeroSelected?.Invoke(serverRpc.Receive.SenderClientId, heroId);

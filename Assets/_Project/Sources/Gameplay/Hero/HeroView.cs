@@ -8,30 +8,17 @@ namespace GOBA
     {
         private Animator _animator;
         private AnimatorOverrideController _overrideAnimator;
-        private List<KeyValuePair<AnimationClip, AnimationClip>> _overrides;
 
-        public void Init(UnitView unitView)
+        public void Init()
         {
-            Instantiate(unitView, transform);
-            _overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            _animator = GetComponentInChildren<Animator>();
+            _animator = transform.parent.GetComponentInChildren<Animator>();
             _overrideAnimator = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _overrideAnimator;
         }
 
-        public void SetTrigger(string triggerName)
+        public void PlayState(string stateName)
         {
-            _animator.SetTrigger(triggerName);
-        }
-
-        public void OverrideAnimation(string overrideClipName, AnimationClip clip)
-        {
-            _overrideAnimator.GetOverrides(_overrides);
-            var target = _overrides.FirstOrDefault(x => x.Key.name == overrideClipName);
-            var index = _overrides.IndexOf(target);
-            _overrides[index] = new KeyValuePair<AnimationClip, AnimationClip>(_overrides[index].Key, clip);
-            _overrideAnimator.ApplyOverrides(_overrides);
-            _animator.runtimeAnimatorController = _overrideAnimator;
+            _animator.Play(stateName, 0);
         }
 
         public ParticleSystem PlayParticle(ParticleSystem particle, Vector3 position, Transform parent)
