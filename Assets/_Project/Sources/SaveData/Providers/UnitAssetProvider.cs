@@ -90,18 +90,5 @@ namespace GOBA
             catalogHandle.WaitForCompletion();
             return catalogHandle.Result;
         }
-
-        private static List<AbilityData> CopyAbilities(List<AbilityData> abilities)
-        {
-            var result = new List<AbilityData>();
-
-            foreach (var abilityData in abilities)
-            {
-                var newData = UnityEngine.Object.Instantiate(abilityData);
-                result.Add(newData);
-            }
-
-            return result;
-        }
     }
 }
