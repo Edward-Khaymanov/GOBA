@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,12 +16,19 @@ namespace GOBA
         {
             _createButton.onClick.AddListener(Create);
             _joinButton.onClick.AddListener(Join);
+            NetworkManager.Singleton.OnServerStarted += OnServerStarted;
+        }
+
+        private void OnServerStarted()
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene(CONSTANTS.LOBBY_SCENE_NAME, LoadSceneMode.Single);
         }
 
         private void OnDisable()
         {
             _createButton.onClick.RemoveListener(Create);
             _joinButton.onClick.AddListener(Join);
+            NetworkManager.Singleton.OnServerStarted -= OnServerStarted;
         }
 
         public void Show()
@@ -35,7 +44,6 @@ namespace GOBA
         private void Create()
         {
             new ConnectionManager().StartHost(CONSTANTS.DEFAULT_PORT);
-            SceneManager.LoadScene(CONSTANTS.LOBBY_SCENE_INDEX);
         }
 
         private void Join()

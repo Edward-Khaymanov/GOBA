@@ -1,14 +1,13 @@
 ﻿using MapModCore;
 using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace GOBA
 {
     [SelectionBase]
-    public abstract class Unit : NetworkBehaviour, IUnit
+    public abstract class Unit : GameEntity, IUnit
     {
         [SerializeField] private UnitCanvas _unitCanvas;
 
@@ -20,14 +19,17 @@ namespace GOBA
         public int AssetId { get; private set; }
         public int TeamId { get; private set; }
         public UnitStats Stats { get; private set; }
-        public bool IsNeutral => TeamId == CONSTANTS.NEUTRAL_TEAM_ID;
 
-        public Transform Transform => transform;
-        public NetworkBehaviour NetworkBehaviour => this;
+        public abstract IList<IAbility> Abilities { get; }
 
         protected virtual void Awake()
         {
             _navigationAgent = GetComponent<NavMeshAgent>();
+        }
+
+        protected virtual void Start()
+        {
+
         }
 
         protected virtual void Update()
@@ -37,14 +39,14 @@ namespace GOBA
 
         protected virtual void OnEnable()
         {
-            OnDamageTaken += TryKill;
+            //OnDamageTaken += TryKill;
         }
 
         protected virtual void OnDisable()
         {
-            OnDamageTaken -= TryKill;
-            Stats.Healf.CurrentChanged -= (current) => _unitCanvas.OnHealfChanged(current, Stats.Healf.Max);
-            Stats.Healf.MaxChanged -= (max) => _unitCanvas.OnHealfChanged(Stats.Healf.Current, max);
+            //OnDamageTaken -= TryKill;
+            //Stats.Healf.CurrentChanged -= (current) => _unitCanvas.OnHealfChanged(current, Stats.Healf.Max);
+            //Stats.Healf.MaxChanged -= (max) => _unitCanvas.OnHealfChanged(Stats.Healf.Current, max);
         }
 
         protected void Init(int assetId, int teamId, UnitStats stats)
@@ -53,17 +55,8 @@ namespace GOBA
             TeamId = teamId;
             Stats = stats;
 
-            Stats.Healf.CurrentChanged += (current) => _unitCanvas.OnHealfChanged(current, Stats.Healf.Max);
-            Stats.Healf.MaxChanged += (max) => _unitCanvas.OnHealfChanged(Stats.Healf.Current, max);
-        }
-
-
-        public virtual void Move(Vector3 position)
-        {
-            if (IsOwner == false)
-                return;
-
-            _navigationAgent.SetDestination(position);
+            //Stats.Healf.CurrentChanged += (current) => _unitCanvas.OnHealfChanged(current, Stats.Healf.Max);
+            //Stats.Healf.MaxChanged += (max) => _unitCanvas.OnHealfChanged(Stats.Healf.Current, max);
         }
 
         public virtual void TakeDamage(DamageType damageType, float damage)
@@ -81,29 +74,14 @@ namespace GOBA
             MyLogger.Log("i am dead", LogLevel.Warning);
         }
 
-        public virtual void EnableInput()
-        {
-        }
-
-        public virtual void DisableInput()
-        {
-        }
-
-        public virtual void InitBindings()
-        {
-
-        }
-
         public virtual void MoveTo(Vector3 position)
         {
-
+            var path = new NavMeshPath();
+            _navigationAgent.CalculatePath(position, path);
+            _navigationAgent.SetPath(path);
         }
 
-        public virtual void UseAbility(int abilityIndex)
-        {
-
-        }
-
-        public abstract void AddCommand(ICommand command);
+        public abstract void UseAbility(int abilityId, AbilityCastData castData);
+        public abstract void CancelAction();
     }
 }

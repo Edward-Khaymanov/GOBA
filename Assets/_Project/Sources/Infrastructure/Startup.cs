@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using GOBA.Network;
+using MapModCore;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,11 @@ namespace GOBA
         private async UniTaskVoid StartAsync()
         {
             UnitAssetProvider.Initialize();
-            await ABILITYLIST.Initialize();
+            var entityManager = new EntityManager();
+            DIContainer.EntityManager = entityManager;
+            var projectileProvider = new ProjectileProvider();
+            await projectileProvider.Initialize();
+            DIContainer.ProjectileProvider = projectileProvider;
 
             if (_loadDemo)
                 StartDemo().Forget();

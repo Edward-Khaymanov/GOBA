@@ -1,5 +1,7 @@
-﻿using MapModCore;
+﻿using Cysharp.Threading.Tasks;
+using MapModCore;
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace GOBA.Assets._Project.Sources._Test
@@ -14,8 +16,6 @@ namespace GOBA.Assets._Project.Sources._Test
             _target = target;
             _targetPosition = targetPosition;
         }
-
-        public bool IsExecuting => false;
 
         public void Execute()
         {

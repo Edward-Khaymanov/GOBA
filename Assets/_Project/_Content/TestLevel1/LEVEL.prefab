@@ -223,6 +223,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 4224939252
   InScenePlacedSourceGlobalObjectIdHash: 2766086550
+  DeferredDespawnTick: 0
+  Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -230,6 +232,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 0
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &2476622069183275961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076185988c3a60642805389e7cd8e97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   <Spawnpoints>k__BackingField:
   - {fileID: 884901743453526703}
   - {fileID: 884901741848874736}
@@ -818,7 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0

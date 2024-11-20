@@ -1,69 +1,126 @@
+using AnimeHeroBattle;
+using Cysharp.Threading.Tasks;
 using GOBA.Assets._Project.Sources._Test;
+using MapModCore;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GOBA
 {
     public class PlayerInput : MonoBehaviour
     {
-        //private LayerMask _terrainMask;
-
-        private bool _initialized;
-        private PlayerCamera _playerCamera;
-        private Player _player;
-        private RaycastHit[] _mouseHits;
+        private bool _enabled;
         private int _mouseHitsCount;
+        private RaycastHit[] _mouseHits;
+        private IList<IUnit> _selectedUnits;//unit group в дальнейшем?
+        private PlayerCamera _playerCamera;
+        private PlayerUI _playerUI;
 
-        public void Init(PlayerCamera playerCamera, Player player)
+        public void Init(PlayerCamera playerCamera, PlayerUI playerUI)
         {
             _playerCamera = playerCamera;
-            _player = player;
-            _initialized = true;
+            _playerUI = playerUI;
             _mouseHits = new RaycastHit[100];
+            _selectedUnits = new List<IUnit>();
+        }
+
+        public void Enable()
+        {
+            MyLogger.Log("player input enabled");
+            _enabled = true;
+        }
+
+        public void Disable()
+        {
+            _enabled = false;
         }
 
         private void Update()
         {
-            if (_initialized == false)
+            if (_enabled == false)
                 return;
+            MyLogger.Log("player input Update");
 
             RaycastMousePosition();
+            HandleCamera();
+            HandleMovement();
+            HandleAbilities();
 
-            if (Input.mouseScrollDelta.y != 0)
+            if (Input.GetKeyDown(KeyCode.S))
             {
-                _playerCamera.ChangeHeight(Input.mouseScrollDelta.y);
+                foreach (var unit in _selectedUnits)
+                {
+                    unit.CancelAction();
+                }
             }
+        }
+
+        private void HandleCamera()
+        {
+            MyLogger.Log("player input HandleCamera");
+            if (Input.mouseScrollDelta.y != 0)
+                _playerCamera.ChangeHeight(Input.mouseScrollDelta.y);
 
             if (Input.GetKeyDown(KeyCode.F1))
-            {
-                _playerCamera.Track(_player.SelectedUnit.Transform);
-            }
+                _playerCamera.Track(_selectedUnits[0].Transform);
 
             if (Input.GetKeyDown(KeyCode.F2))
-            {
                 _playerCamera.Untrack();
-            }
-
-            if (Utils.IsMouseOverUI() == false)
-            {
-                HandleMovement();
-            }
         }
 
         private void HandleMovement()
         {
+            MyLogger.Log("player input HandleMovement");
+            if (Utils.IsMouseOverUI())
+                return;
+
             if (Input.GetMouseButtonDown(1))
             {
                 var position = GetMovePosition();
                 if (position != default)
                 {
-                    foreach (var unit in _player.SelectedUnits)
+                    foreach (var unit in _selectedUnits)
                     {
-                        var command = new MoveCommand(unit, position);
-                        unit.AddCommand(command);
-                        //unit.MoveTo(position);
+                        MainCommandSender.Instance.MoveTo(unit, position);
                     }
                 }
             }
+        }
+
+        private void HandleAbilities()
+        {
+            MyLogger.Log("player input HandleAbilities");
+            var abilityIndex = -1;
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                abilityIndex = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                abilityIndex = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                abilityIndex = 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+                abilityIndex = 3;
+            }
+            else if (Input.GetKeyDown(KeyCode.T))
+            {
+                abilityIndex = 4;
+            }
+
+            if (abilityIndex == -1)
+                return;
+
+            var ability = _selectedUnits[0].Abilities[abilityIndex];
+            if (Utils.HasAnyFlag(ability.Behaviour, AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_PASSIVE | AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_AURA))
+                return;
+
+            ActivateAbility(ability).Forget();
         }
 
         private Vector3 GetMovePosition()
@@ -79,24 +136,36 @@ namespace GOBA
             return default;
         }
 
-        //private bool GetMovePoint(out Vector3 movePoint)
-        //{
-        //    movePoint = Vector3.zero;
-        //    var mouseScreenPosition = Input.mousePosition;
-        //    var ray = _playerCamera.Camera.ScreenPointToRay(mouseScreenPosition);
-
-        //    if (Physics.Raycast(ray, out RaycastHit hit, 200f, _terrainMask) == false)
-        //        return false;
-
-        //    movePoint = hit.point;
-        //    return true;
-        //}
-
         private void RaycastMousePosition()
         {
+            MyLogger.Log("player input RaycastMousePosition");
             var mouseScreenPosition = Input.mousePosition;
             var ray = _playerCamera.Camera.ScreenPointToRay(mouseScreenPosition);
             _mouseHitsCount = Physics.RaycastNonAlloc(ray, _mouseHits, 100f);
+        }
+
+        public void SelectUnits(IList<IUnit> units)
+        {
+            _selectedUnits = units;
+            _playerUI.OnSelectUnit(_selectedUnits[0]);
+        }
+
+        private async UniTaskVoid ActivateAbility(IAbility ability)
+        {
+            //выброр цели
+            var castData = new AbilityCastData();
+            var abilityOwner = DIContainer.EntityManager.GetUnit(ability.OwnerEntityId);
+
+            if (ability is FireBall)
+            {
+                castData = new AbilityCastData()
+                {
+                    CastPoint = abilityOwner.Transform.position + new Vector3(10, 10, 0),
+                    //UnitsReferences = new NetworkBehaviourReference [] { _selectedUnits[0].NetworkBehaviour }
+                };
+            }
+
+            MainCommandSender.Instance.UseAbility(_selectedUnits[0], ability.Id, castData);
         }
     }
 }

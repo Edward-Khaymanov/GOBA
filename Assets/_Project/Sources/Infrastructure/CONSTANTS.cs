@@ -20,6 +20,7 @@ namespace GOBA
 
         public const string GAME_SCENE_NAME = "Game";
         public const string MAIN_MENU_SCENE_NAME = "MainMenu";
+        public const string LOBBY_SCENE_NAME = "Lobby";
 
 
         public class Layers

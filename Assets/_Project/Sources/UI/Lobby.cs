@@ -14,14 +14,6 @@ namespace GOBA
 
         private LobbyData _lobbyData;
 
-        private void Start()
-        {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                this.NetworkObject.Spawn();
-            }
-        }
-
         private void Update()
         {
             if (base.IsServer)
