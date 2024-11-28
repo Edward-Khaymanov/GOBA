@@ -20,8 +20,6 @@ namespace GOBA
         public int TeamId { get; private set; }
         public UnitStats Stats { get; private set; }
 
-        public abstract IList<IAbility> Abilities { get; }
-
         protected virtual void Awake()
         {
             _navigationAgent = GetComponent<NavMeshAgent>();
@@ -81,6 +79,7 @@ namespace GOBA
             _navigationAgent.SetPath(path);
         }
 
+        public abstract IList<Ability> GetAbilities();
         public abstract void UseAbility(int abilityId, AbilityCastData castData);
         public abstract void CancelAction();
     }

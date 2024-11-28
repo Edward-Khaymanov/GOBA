@@ -116,8 +116,8 @@ namespace GOBA
             if (abilityIndex == -1)
                 return;
 
-            var ability = _selectedUnits[0].Abilities[abilityIndex];
-            if (Utils.HasAnyFlag(ability.Behaviour, AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_PASSIVE | AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_AURA))
+            var ability = _selectedUnits[0].GetAbilities()[abilityIndex];
+            if (Utils.HasAnyFlag(ability.GetBehaviour(), AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_PASSIVE | AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_AURA))
                 return;
 
             ActivateAbility(ability).Forget();
@@ -150,11 +150,11 @@ namespace GOBA
             _playerUI.OnSelectUnit(_selectedUnits[0]);
         }
 
-        private async UniTaskVoid ActivateAbility(IAbility ability)
+        private async UniTaskVoid ActivateAbility(Ability ability)
         {
             //выброр цели
             var castData = new AbilityCastData();
-            var abilityOwner = DIContainer.EntityManager.GetUnit(ability.OwnerEntityId);
+            var abilityOwner = ability.GetOwner();
 
             if (ability is FireBall)
             {

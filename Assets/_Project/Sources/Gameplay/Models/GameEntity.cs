@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GOBA
 {
-    public class GameEntity : NetworkBehaviour, IGameEntity
+    public abstract class GameEntity : NetworkBehaviour, IGameEntity
     {
         private NetworkVariable<int> _entityId = new NetworkVariable<int>();
 

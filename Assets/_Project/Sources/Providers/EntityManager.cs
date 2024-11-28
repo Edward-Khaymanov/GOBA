@@ -1,14 +1,18 @@
 ﻿using MapModCore;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Netcode;
 
 namespace GOBA
 {
     public class EntityManager : IEntityManager
     {
-        private HashSet<IGameEntity> _entities = new HashSet<IGameEntity>();
-        private int _currentAvailableEntityId = int.MinValue;
+        private HashSet<IGameEntity> _entities;
+        private int _currentAvailableEntityId;
+
+        public EntityManager()
+        {
+            Reset();
+        }
 
         public int GetAvailableEntityId()
         {
@@ -25,14 +29,14 @@ namespace GOBA
             return _entities.FirstOrDefault(x => x.Id == entityId);
         }
 
-        public IUnit GetUnit(int entityId)
-        {
-            return _entities.FirstOrDefault(x => x.Id == entityId && x is IUnit) as IUnit;
-        }
-
         public void RemoveEntity(IGameEntity entity)
         {
             _entities.Remove(entity);
+        }
+
+        public void RemoveEntity(int entityId)
+        {
+            _entities.RemoveWhere(x => x.Id == entityId);
         }
 
         public void Reset()

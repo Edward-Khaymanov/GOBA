@@ -15,7 +15,6 @@ namespace GOBA
         private CancellationTokenSource _abilityCancelationTokenSource;
 
         public HeroView View => _view;
-        public override IList<IAbility> Abilities => GetAbilities();
 
         private NetworkAbilityList _abilityList = new NetworkAbilityList();
 
@@ -24,12 +23,6 @@ namespace GOBA
             Init(heroId, teamId);
 
             _isInitialized = true;
-        }
-
-        public IList<IAbility> GetAbilities()
-        {
-            return _abilityList.Value.Cast<IAbility>().ToList();
-            //return _orderProperty.Values.Select(x => x.Value).Cast<IAbility>().ToList();
         }
 
         protected override void Update()
@@ -78,6 +71,12 @@ namespace GOBA
         }
 
 
+        public override IList<Ability> GetAbilities()
+        {
+            return _abilityList.Value;
+            //return _orderProperty.Values.Select(x => x.Value).Cast<IAbility>().ToList();
+        }
+
         public void AddAbility(int abilityId, int orderId)
         {
             var abil = ABILITYLIST.GetAbility(abilityId);
@@ -123,7 +122,7 @@ namespace GOBA
 
         private async UniTaskVoid UseAbility(int abilityId, AbilityCastData castData, CancellationToken cancellationToken)
         {
-            var ability = Abilities.FirstOrDefault(x => x.Id == abilityId);
+            var ability = GetAbilities().FirstOrDefault(x => x.Id == abilityId);
             if (ability == null)
                 return;
 
