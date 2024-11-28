@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace GOBA.CORE
+﻿namespace GOBA.CORE
 {
-    public interface IUnit : IGameEntity, IMove
+    public interface IUnit : IGameEntity, IMove, IAbilityOwner
     {
-        public IList<Ability> GetAbilities();
-        public void UseAbility(int abilityId, AbilityCastData castData);
         public void CancelAction();
     }
 }
