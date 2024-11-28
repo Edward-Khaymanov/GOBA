@@ -1,4 +1,4 @@
-﻿using MapModCore;
+﻿using GOBA.CORE;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

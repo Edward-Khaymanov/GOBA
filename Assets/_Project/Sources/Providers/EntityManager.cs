@@ -1,4 +1,4 @@
-﻿using MapModCore;
+﻿using GOBA.CORE;
 using System.Collections.Generic;
 using System.Linq;
 

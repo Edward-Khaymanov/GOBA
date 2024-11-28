@@ -1,5 +1,5 @@
 ﻿//using Cysharp.Threading.Tasks;
-//using MapModCore;
+//using GOBA.CORE;
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Threading;

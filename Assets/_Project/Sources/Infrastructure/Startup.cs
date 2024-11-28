@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using GOBA.Network;
-using MapModCore;
+using GOBA.CORE;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3418734374
+  GlobalObjectIdHash: 2747338865
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6662079874235275912}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1648276110, guid: 54f4edbaae81ac049a5726d742338dd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 24375617da8461d4a97e9c5c365488e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1

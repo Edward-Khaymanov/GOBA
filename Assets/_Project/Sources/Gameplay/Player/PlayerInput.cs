@@ -1,7 +1,7 @@
 using AnimeHeroBattle;
 using Cysharp.Threading.Tasks;
 using GOBA.Assets._Project.Sources._Test;
-using MapModCore;
+using GOBA.CORE;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -1,5 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using MapModCore;
+using GOBA.CORE;
 using System;
 using System.Threading;
 using UnityEngine;

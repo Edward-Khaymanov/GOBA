@@ -1,4 +1,4 @@
-﻿using MapModCore;
+﻿using GOBA.CORE;
 using Unity.Netcode;
 using UnityEngine;
 

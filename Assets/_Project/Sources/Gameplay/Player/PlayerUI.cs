@@ -1,4 +1,4 @@
-using MapModCore;
+using GOBA.CORE;
 using UnityEngine;
 using UnityEngine.UI;
 

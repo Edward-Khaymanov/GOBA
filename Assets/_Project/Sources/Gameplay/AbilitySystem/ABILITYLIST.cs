@@ -1,5 +1,5 @@
 ﻿using AnimeHeroBattle;
-using MapModCore;
+using GOBA.CORE;
 using System.Collections.Generic;
 
 namespace GOBA

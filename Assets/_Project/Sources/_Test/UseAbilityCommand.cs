@@ -1,4 +1,4 @@
-﻿using MapModCore;
+﻿using GOBA.CORE;
 
 namespace GOBA.Assets._Project.Sources._Test
 {
