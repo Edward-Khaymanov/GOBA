@@ -1,32 +1,19 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using UnityEngine;
+﻿using Newtonsoft.Json.Linq;
+using System;
 
-//namespace GOBA.CORE
-//{
-//    [Serializable]
-//    public class AbilityDefinition
-//    {
-//        public int Id { get; }
-//        public Sprite Icon { get; }
-//        public string NameKey { get; }
-//        public string DescriptionKey { get; }
-//        public AbilityArt AbilArt;
-//        public AbilityStats AbilityStats;
-//    }
-
-//    [Serializable]
-//    public class AbilityArt
-//    {
-        
-//    }
-
-//    [Serializable]
-//    public class AbilityStats
-//    {
-        
-//    }
-//}
+namespace GOBA.CORE
+{
+    [Serializable]
+    public class AbilityDefinition
+    {
+        public int Id;
+        public string ScriptFileName;
+        public string IconTextureName;
+        public string NameKey;
+        public string DescriptionKey;
+        //public JObject Art;
+        //public JObject Data;
+        //public JObject SpecialValues;
+        public JObject Data;
+    }
+}

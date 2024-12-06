@@ -130,7 +130,7 @@ namespace GOBA
                 return;
 
             //CurrentAbitity = abilityActive;
-            ability.Use(castData);
+            ability.CastAbility(castData);
             //var particle = _view.PlayParticle(abilityActive.ActivateParticle, transform.position, transform);
             //_view.OverrideAnimation(HeroAnimatorController.OverrideClips.AbilityActivation, abilityActive.ActivateAnimation);
             //_view.StartAnimatorTrigger(HeroAnimatorController.Params.AbilityActivationTrigger);

@@ -10,7 +10,7 @@ namespace GOBA
         {
             var data = new FireBallData()
             {
-                Id = 1,
+                //Id = 1,
                 CastRadius = 2,
                 CastRange = 6,
                 Cooldown = 4,

@@ -7,7 +7,6 @@ namespace AnimeHeroBattle
     [Serializable]
     public struct FireBallData : INetworkSerializeByMemcpy
     {
-        public int Id;
         public AbilityBehaviour Behaviour;
         public AbilityUnitTargetType UnitTargetType;
         public AbilityUnitTargetTeam UnitTargetTeam;

@@ -9,6 +9,7 @@ namespace AnimeHeroBattle
     public class FireBall : Ability
     {
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        //private FireBallData _data;
         private int _projectileId;
         private float _currentCooldown;
 

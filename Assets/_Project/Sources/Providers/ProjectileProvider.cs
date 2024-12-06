@@ -10,7 +10,7 @@ namespace GOBA
 {
     public class ProjectileProvider : IProjectileProvider
     {
-        private static Dictionary<int, IResourceLocation> _idProjectile;
+        private Dictionary<int, IResourceLocation> _idProjectile;
         //private Dictionary<int, AbilityProjectile> _idProjectile;
 
         public async UniTask Initialize()

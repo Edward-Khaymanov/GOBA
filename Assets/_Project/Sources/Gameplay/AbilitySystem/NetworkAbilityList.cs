@@ -9,18 +9,6 @@ using UnityEngine;
 
 namespace GOBA
 {
-
-
-
-    public static class MyClass<T> where T : Ability, new()
-    {
-        public static readonly Func<T> Instance = Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
-    }
-
-
-
-
-
     public class NetworkAbilityList : NetworkVariableBase
     {
         private readonly List<Ability> _value = new List<Ability>(8);

@@ -1,19 +1,42 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Unity.Netcode;
 
 namespace GOBA.CORE
 {
+    public interface IAbilityBody
+    {
+        public void OnSync<T>(BufferSerializer<T> serializer) where T : IReaderWriter;
+    }
+
+    public class FireD : IAbilityBody
+    {
+        private int id;
+        private int zxc;
+
+        public void OnSync<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref id);
+            serializer.SerializeValue(ref zxc);
+        }
+    }
+
     public abstract class Ability : INetworkSerializable, IEquatable<Ability>
     {
+        private int _id;
+        private AbilityDefinition _abilityDefinition;
         private int _ownerEntityId;
+        private IAbilityBody _body;
         //private Dictionary<string, string> _keyValues = new Dictionary<string, string>();
 
-        public abstract int Id { get; }
+        public int Id => _id;
 
-        public virtual void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
+            serializer.SerializeValue(ref _id);
             serializer.SerializeValue(ref _ownerEntityId);
-
+            OnSync(serializer);
+            _body.OnSync(serializer);
             //if (serializer.IsReader)
             //{
             //    _keyValues.Clear();
@@ -47,19 +70,33 @@ namespace GOBA.CORE
         //{
 
         //}
-
         public bool Equals(Ability other)
         {
-            return Id == other.Id;
+            return _id == other._id;
         }
 
-        public abstract void Use(AbilityCastData castData);
-        public abstract AbilityBehaviour GetBehaviour();
-        public abstract AbilityUnitTargetType GetTargetType();
-        public abstract AbilityUnitTargetTeam GetTargetTeam();
+        public abstract void CastAbility(AbilityCastData castData);
+
+        public AbilityBehaviour GetBehaviour()
+        {
+            return GetDefinitionData<AbilityBehaviour>("AbilityBehaviour");
+        }
+        public AbilityUnitTargetType GetTargetType()
+        {
+            return GetDefinitionData<AbilityUnitTargetType>("AbilityUnitTargetType");
+
+        }
+        public AbilityUnitTargetTeam GetTargetTeam()
+        {
+            return GetDefinitionData<AbilityUnitTargetTeam>("AbilityUnitTargetTeam");
+        }
 
 
-
+        public virtual void Initialize(AbilityDefinition definition)
+        {
+            _id = definition.Id;
+            _abilityDefinition = definition;
+        }
         public IUnit GetOwner()
         {
             return DIContainer.EntityManager.GetEntity(_ownerEntityId) as IUnit;
@@ -68,9 +105,16 @@ namespace GOBA.CORE
         {
             _ownerEntityId = ownerEntityId;
         }
-        public virtual float GetCooldownTimeRemaining() => 0f;
-        public virtual float GetCooldown(int level) => 0f;
-        public virtual void StartCooldown(float cooldown) { }
-        public virtual void EndCooldown() { }
+        public virtual float GetCooldownTimeRemaining() => throw new NotImplementedException();
+        public virtual float GetCooldown(int level) => throw new NotImplementedException();
+        public virtual void StartCooldown(float cooldown) => throw new NotImplementedException();
+        public virtual void EndCooldown() => throw new NotImplementedException();
+
+        protected abstract void OnSync<T>(BufferSerializer<T> serializer) where T : IReaderWriter;
+
+        protected T GetDefinitionData<T>(string key)
+        {
+            return _abilityDefinition.Data.Value<T>(key);
+        }
     }
 }
