@@ -1,0 +1,16 @@
+{
+	"Id": 1,
+	"Name": "Fireball",
+	"PrefabName": "FireballAbility",
+	"Data":{
+		"MaxLevel": 1,
+		"Cost": [23.5],
+		"Cooldown": [2],
+		"CastTime": 0,
+		"AbilityBehaviour": 4,
+		"AbilityUnitTargetType": 2,
+		"AbilityUnitTargetTeam": 8,
+		"ProjectileName": "CapsuleTemplate",
+		"ProjectileSpeed": 10,
+	}
+}

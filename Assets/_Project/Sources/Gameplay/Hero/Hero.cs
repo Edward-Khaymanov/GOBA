@@ -3,6 +3,7 @@ using GOBA.CORE;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace GOBA
@@ -16,7 +17,14 @@ namespace GOBA
 
         public HeroView View => _view;
 
-        private NetworkAbilityList _abilityList = new NetworkAbilityList();
+        //private NetworkAbilityList _abilityList = new NetworkAbilityList();
+        private NetworkList<int> _abilityList;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _abilityList = new NetworkList<int>();
+        }
 
         public void Initialize(int heroId, int teamId)
         {
@@ -30,58 +38,51 @@ namespace GOBA
             base.Update();
             if (IsServer)
             {
-                _abilityList.SetDirty(true);
+                //_abilityList.SetDirty(true);
             }
-            DebugAbilityCooldown();
+            //DebugAbilityCooldown();
         }
 
 
-        private void DebugAbilityCooldown()
+        //private void DebugAbilityCooldown()
+        //{
+        //    var message = string.Empty;
+        //    if (_abilityList == null)
+        //    {
+        //        message = "abilities is null";
+        //    }
+        //    if (_abilityList.Value.Count != 0)
+        //    {
+        //        message = $"{_abilityList.Value.FirstOrDefault().GetCooldownTimeRemaining()}";
+        //    }
+        //    Debug.Log(message);
+        //}
+
+
+        //private void DebugAbilityCount()
+        //{
+        //    var message = string.Empty;
+
+        //    if (_abilityList == null)
+        //    {
+        //        message = "abilities is null";
+        //    }
+        //    else if (_abilityList.Value == null)
+        //    {
+        //        message = "list is null";
+        //    }
+        //    else
+        //    {
+        //        message = $"{_abilityList.Value.Count}";
+        //    }
+        //    Debug.Log(message);
+        //}
+
+
+        public override IList<AbilityBase> GetAbilities()
         {
-            var message = string.Empty;
-            if (_abilityList == null)
-            {
-                message = "abilities is null";
-            }
-            if (_abilityList.Value.Count != 0)
-            {
-                message = $"{_abilityList.Value.FirstOrDefault().GetCooldownTimeRemaining()}";
-            }
-            Debug.Log(message);
-        }
-
-
-        private void DebugAbilityCount()
-        {
-            var message = string.Empty;
-
-            if (_abilityList == null)
-            {
-                message = "abilities is null";
-            }
-            else if (_abilityList.Value == null)
-            {
-                message = "list is null";
-            }
-            else
-            {
-                message = $"{_abilityList.Value.Count}";
-            }
-            Debug.Log(message);
-        }
-
-
-        public override IList<Ability> GetAbilities()
-        {
-            return _abilityList.Value;
-            //return _orderProperty.Values.Select(x => x.Value).Cast<IAbility>().ToList();
-        }
-
-        public void AddAbility(int abilityId, int orderId)
-        {
-            var abil = ABILITYLIST.GetAbility(abilityId);
-            abil.SetOwner(this.Id);
-            _abilityList.Add(abil);
+            var abiltiesEntity = DIContainer.EntityManager.GetEntities(_abilityList.GetValues());
+            return abiltiesEntity.Cast<AbilityBase>().ToList();
         }
 
         public void RemoveAbility(int abilityId)
@@ -122,7 +123,7 @@ namespace GOBA
 
         private async UniTaskVoid UseAbility(int abilityId, AbilityCastData castData, CancellationToken cancellationToken)
         {
-            var ability = GetAbilities().FirstOrDefault(x => x.Id == abilityId);
+            var ability = GetAbilities().FirstOrDefault(x => x.AbilityId == abilityId);
             if (ability == null)
                 return;
 
@@ -146,6 +147,11 @@ namespace GOBA
 
             //_abilityCancelationTokenSource = new CancellationTokenSource();
             //CurrentAbitity = null;
+        }
+
+        public override void AddAbility(AbilityBase ability)
+        {
+            _abilityList.Add(ability.EntityId);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IProjectileProvider
     {
-        public AbilityProjectile GetProjectile(int id);
+        public AbilityProjectile GetProjectileTemplate(string projectileName);
     }
 }

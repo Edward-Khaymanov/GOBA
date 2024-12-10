@@ -20,12 +20,31 @@ namespace GOBA
         [SerializeField] public HeroSelectionMenu _heroSelectionMenu;
         [SerializeField] public MainCommandSender _mainCommandSender;
 
+        private IProjectileManager _projectileManager;
+        private IProjectileProvider _projectileProvider;
+        private IParticleManager _particleManager;
+        private AbilityProvider _abilityProvider;
+
         public string CurrentTime => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
 
         private Dictionary<ulong, int> _clientsSelectedHero;
 
         public async UniTask SetupGame(LobbyData lobbyData, bool test)
         {
+            var projectileProvider = new ProjectileProvider();
+            var addressablesProvider = new AddressablesProvider();
+            await projectileProvider.Initialize(addressablesProvider);
+            var projectileManager = new ProjectileManager(projectileProvider);
+            var abilityProvider = new AbilityProvider();
+            await abilityProvider.Initialize(addressablesProvider);
+
+            _projectileProvider = projectileProvider;
+            _projectileManager = projectileManager;
+            _particleManager = null;
+            _abilityProvider = abilityProvider;
+
+            DevCheats.Init(DIContainer.EntityManager, _particleManager, _projectileManager, _projectileProvider, _abilityProvider);
+
             if (test)
             {
                 //await TestSetup(lobbyData);
@@ -100,7 +119,8 @@ namespace GOBA
             await UniTask.NextFrame();
             heroModel.GetComponent<NetworkObject>().TrySetParent(hero.NetworkBehaviour.NetworkObject, false);
             hero.Initialize(heroId, teamId);
-            hero.AddAbility(1, 1);
+            var ability = DevCheats.AddAbilityToUnit("Fireball", hero);
+            ability.SetLevel(1);
             return hero;
         }
 

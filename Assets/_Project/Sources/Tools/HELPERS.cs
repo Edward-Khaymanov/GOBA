@@ -46,16 +46,6 @@ namespace GOBA
             return target;
         }
 
-        public static Vector2 GetXZ(this Vector3 vector)
-        {
-            return new Vector2(vector.x, vector.z);
-        }
-
-        public static float FlatDistanceTo(this Vector3 from, Vector3 to)
-        {
-            var a = from.GetXZ();
-            var b = to.GetXZ();
-            return Vector2.Distance(a, b);
-        }
+        
     }
 }

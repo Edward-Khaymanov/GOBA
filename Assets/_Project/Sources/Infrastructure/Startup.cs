@@ -23,9 +23,6 @@ namespace GOBA
             UnitAssetProvider.Initialize();
             var entityManager = new EntityManager();
             DIContainer.EntityManager = entityManager;
-            var projectileProvider = new ProjectileProvider();
-            await projectileProvider.Initialize();
-            DIContainer.ProjectileProvider = projectileProvider;
 
             if (_loadDemo)
                 StartDemo().Forget();

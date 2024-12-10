@@ -21,6 +21,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - unit
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94e1c7df2c8f2c54a82f27001a0556da
+    m_Address: FireballAbility
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a5169c6b5d67a6446b1dddf19da5ddc0
     m_Address: CapsuleTemplate
     m_ReadOnly: 0

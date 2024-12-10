@@ -11,6 +11,11 @@ namespace GOBA
     {
         [SerializeField] private UnitCanvas _unitCanvas;
 
+        private float _manaBase = 2000f;
+        private float _manaCurrent = 400f;
+        private float _manaMax = 10000000f;
+
+
         protected NavMeshAgent _navigationAgent;
 
         public event Action OnDamageTaken;
@@ -79,8 +84,20 @@ namespace GOBA
             _navigationAgent.SetPath(path);
         }
 
-        public abstract IList<Ability> GetAbilities();
+        public abstract IList<AbilityBase> GetAbilities();
         public abstract void UseAbility(int abilityId, AbilityCastData castData);
         public abstract void CancelAction();
+
+        public void SpendMana(float amount, AbilityBase ability)
+        {
+            _manaCurrent = Mathf.Clamp(_manaCurrent - Mathf.Abs(amount), 0, _manaMax);
+        }
+
+        public float GetMana()
+        {
+            return _manaCurrent;
+        }
+
+        public abstract void AddAbility(AbilityBase ability);
     }
 }

@@ -1,4 +1,4 @@
-using AnimeHeroBattle;
+using GOBA.DEMO1;
 using Cysharp.Threading.Tasks;
 using GOBA.Assets._Project.Sources._Test;
 using GOBA.CORE;
@@ -117,7 +117,7 @@ namespace GOBA
                 return;
 
             var ability = _selectedUnits[0].GetAbilities()[abilityIndex];
-            if (Utils.HasAnyFlag(ability.GetBehaviour(), AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_PASSIVE | AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_AURA))
+            if (ability.GetBehaviour().HasAnyFlag(AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_PASSIVE | AbilityBehaviour.DOTA_ABILITY_BEHAVIOR_AURA))
                 return;
 
             ActivateAbility(ability).Forget();
@@ -150,7 +150,7 @@ namespace GOBA
             _playerUI.OnSelectUnit(_selectedUnits[0]);
         }
 
-        private async UniTaskVoid ActivateAbility(Ability ability)
+        private async UniTaskVoid ActivateAbility(AbilityBase ability)
         {
             //выброр цели
             var castData = new AbilityCastData();
@@ -160,12 +160,12 @@ namespace GOBA
             {
                 castData = new AbilityCastData()
                 {
-                    CastPoint = abilityOwner.Transform.position + new Vector3(10, 10, 0),
+                    CastPoint = abilityOwner.Transform.position + new Vector3(10, 10, 10),
                     //UnitsReferences = new NetworkBehaviourReference [] { _selectedUnits[0].NetworkBehaviour }
                 };
             }
 
-            MainCommandSender.Instance.UseAbility(_selectedUnits[0], ability.Id, castData);
+            MainCommandSender.Instance.UseAbility(_selectedUnits[0], ability.AbilityId, castData);
         }
     }
 }
