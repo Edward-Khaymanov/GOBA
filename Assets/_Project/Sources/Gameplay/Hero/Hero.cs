@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using GOBA.CORE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -25,54 +26,13 @@ namespace GOBA
 
         public void Initialize(int heroId, int teamId)
         {
-            Init(heroId, teamId);
+            //var hero = UnitAssetProvider.GetHero(heroId);
+            //base.Init(heroId, teamId, hero.BaseStats);
+            //Attributes = hero.BaseAttributes;
+            _view.Init();
+            _abilityCancelationTokenSource = new CancellationTokenSource();
+            NavAgent.enabled = true;
         }
-
-        protected override void Update()
-        {
-            base.Update();
-            if (IsServer)
-            {
-                //_abilityList.SetDirty(true);
-            }
-            //DebugAbilityCooldown();
-        }
-
-
-        //private void DebugAbilityCooldown()
-        //{
-        //    var message = string.Empty;
-        //    if (_abilityList == null)
-        //    {
-        //        message = "abilities is null";
-        //    }
-        //    if (_abilityList.Value.Count != 0)
-        //    {
-        //        message = $"{_abilityList.Value.FirstOrDefault().GetCooldownTimeRemaining()}";
-        //    }
-        //    Debug.Log(message);
-        //}
-
-
-        //private void DebugAbilityCount()
-        //{
-        //    var message = string.Empty;
-
-        //    if (_abilityList == null)
-        //    {
-        //        message = "abilities is null";
-        //    }
-        //    else if (_abilityList.Value == null)
-        //    {
-        //        message = "list is null";
-        //    }
-        //    else
-        //    {
-        //        message = $"{_abilityList.Value.Count}";
-        //    }
-        //    Debug.Log(message);
-        //}
-
 
         public override IList<AbilityBase> GetAbilities()
         {
@@ -82,20 +42,7 @@ namespace GOBA
 
         public void RemoveAbility(int abilityId)
         {
-            //var ability = _abilities.FirstOrDefault(x => x.Id == abilityId);
-            //if (ability == null)
-            //    return;
-
-            //_abilities.Remove(ability);
-        }
-
-        public void Init(int heroId, int teamId)
-        {
-            //var hero = UnitAssetProvider.GetHero(heroId);
-            //base.Init(heroId, teamId, hero.BaseStats);
-            //Attributes = hero.BaseAttributes;
-            _view.Init();
-            _abilityCancelationTokenSource = new CancellationTokenSource();
+            throw new NotImplementedException();
         }
 
         public override void MoveTo(Vector3 position)
