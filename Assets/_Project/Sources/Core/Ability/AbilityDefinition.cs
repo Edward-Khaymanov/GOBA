@@ -21,14 +21,14 @@ namespace GOBA.CORE
     public class AbilityDefinition : INetworkSerializable, IEquatable<AbilityDefinition>
     {
         public int Id;
-        public string Name;
-        public string PrefabName;
-        public string IconTextureName;
-        public string DescriptionKey;
+        public string Name = string.Empty;
+        public string PrefabName = string.Empty;
+        public string IconTextureName = string.Empty;
+        public string DescriptionKey = string.Empty;
         //public JObject Art;
         //public JObject Data;
         //public JObject SpecialValues;
-        public JObject Data;
+        public JObject Data = new JObject();
 
         public bool Equals(AbilityDefinition other)
         {
@@ -38,6 +38,9 @@ namespace GOBA.CORE
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref Id);
+            serializer.SerializeValue(ref Name);
+            serializer.SerializeValue(ref IconTextureName);
+            serializer.SerializeValue(ref DescriptionKey);
             if (serializer.IsWriter)
             {
                 var writer = serializer.GetFastBufferWriter();
