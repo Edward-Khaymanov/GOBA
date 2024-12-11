@@ -7,36 +7,18 @@ using UnityEngine;
 
 namespace GOBA.CORE
 {
-    public abstract class AbilityBase : GameEntity/*, INetworkSerializable, IEquatable<Ability>*/
+    public abstract class AbilityBase : GameEntity
     {
         private NetworkVariable<int> _abilityId = new NetworkVariable<int>();
-        private NetworkVariable<int> _ownerEntityId = new NetworkVariable<int>();        //временно помоему
+        private NetworkVariable<int> _ownerEntityId = new NetworkVariable<int>();
         private NetworkVariable<int> _level = new NetworkVariable<int>();
         private NetworkVariable<float> _cooldown = new NetworkVariable<float>();
         private NetworkVariable<AbilityDefinition> _abilityDefinition = new NetworkVariable<AbilityDefinition>();
-
         private CancellationTokenSource _cooldownCancellationSource;
-
-
         protected IProjectileManager ProjectileManager;
         protected IParticleManager ParticleManager;
 
-
-
-
         public int AbilityId => _abilityId.Value;
-
-        //public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        //{
-        //    serializer.SerializeValue(ref _abilityId);
-        //    serializer.SerializeValue(ref _ownerEntityId);
-        //    OnSync(serializer);
-        //}
-
-        //public bool Equals(Ability other)
-        //{
-        //    return _abilityId == other._abilityId;
-        //}
 
         public void SetDependencies(IProjectileManager projectileManager, IParticleManager particleManager)
         {
