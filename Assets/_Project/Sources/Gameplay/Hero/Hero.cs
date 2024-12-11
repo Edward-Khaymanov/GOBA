@@ -12,13 +12,10 @@ namespace GOBA
     {
         [SerializeField] private HeroView _view;
 
-        private bool _isInitialized;
         private CancellationTokenSource _abilityCancelationTokenSource;
+        private NetworkList<int> _abilityList;
 
         public HeroView View => _view;
-
-        //private NetworkAbilityList _abilityList = new NetworkAbilityList();
-        private NetworkList<int> _abilityList;
 
         protected override void Awake()
         {
@@ -29,8 +26,6 @@ namespace GOBA
         public void Initialize(int heroId, int teamId)
         {
             Init(heroId, teamId);
-
-            _isInitialized = true;
         }
 
         protected override void Update()
@@ -96,8 +91,8 @@ namespace GOBA
 
         public void Init(int heroId, int teamId)
         {
-            var hero = UnitAssetProvider.GetHero(heroId);
-            base.Init(heroId, teamId, hero.BaseStats);
+            //var hero = UnitAssetProvider.GetHero(heroId);
+            //base.Init(heroId, teamId, hero.BaseStats);
             //Attributes = hero.BaseAttributes;
             _view.Init();
             _abilityCancelationTokenSource = new CancellationTokenSource();
@@ -125,9 +120,6 @@ namespace GOBA
         {
             var ability = GetAbilities().FirstOrDefault(x => x.AbilityId == abilityId);
             if (ability == null)
-                return;
-
-            if (ability.GetCooldownTimeRemaining() > 0)
                 return;
 
             //CurrentAbitity = abilityActive;

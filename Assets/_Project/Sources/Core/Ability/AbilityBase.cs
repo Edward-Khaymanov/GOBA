@@ -9,11 +9,11 @@ namespace GOBA.CORE
 {
     public abstract class AbilityBase : GameEntity/*, INetworkSerializable, IEquatable<Ability>*/
     {
-        private int _abilityId;
-        private AbilityDefinition _abilityDefinition;
-        private int _ownerEntityId;
-        private int _level;
-        private float _cooldown;
+        private NetworkVariable<int> _abilityId = new NetworkVariable<int>();
+        private NetworkVariable<int> _ownerEntityId = new NetworkVariable<int>();        //временно помоему
+        private NetworkVariable<int> _level = new NetworkVariable<int>();
+        private NetworkVariable<float> _cooldown = new NetworkVariable<float>();
+        private NetworkVariable<AbilityDefinition> _abilityDefinition = new NetworkVariable<AbilityDefinition>();
 
         private CancellationTokenSource _cooldownCancellationSource;
 
@@ -24,7 +24,7 @@ namespace GOBA.CORE
 
 
 
-        public int AbilityId => _abilityId;
+        public int AbilityId => _abilityId.Value;
 
         //public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         //{
@@ -46,25 +46,28 @@ namespace GOBA.CORE
 
         public virtual void Initialize(AbilityDefinition definition)
         {
-            _abilityId = definition.Id;
-            _abilityDefinition = definition;
+            _abilityId.Value = definition.Id;
+            _abilityDefinition.Value = definition;
         }
 
         public async UniTask CastAbility(AbilityCastData castData)
         {
+            var canBeUsed = CanBeUsed();
+            if (canBeUsed == false)
+                return;
+
             await OnAbilityPhaseStart(castData);
             //включаем анимацию (может и не отсюда хз)
             var castTime = GetCastTime();
             //////////////////////////////////////ВСЕ ЧТО ДАЛЬШЕ НАДО КАК ТО ПРЕРВАТЬ, ЕСЛИ НАС ПРЕРВАЛИ
-            await UniTask.Delay(TimeSpan.FromSeconds(castTime));
-            //это не прерывается
-            var caster = GetOwner();
-            if (GetCost() > caster.GetMana())
+            canBeUsed = CanBeUsed();
+            if (canBeUsed == false)
             {
-                Debug.LogWarning("НЕТ МАНЫ");
                 OnAbilityPhaseInterrupted(castData);
                 return;
             }
+            await UniTask.Delay(TimeSpan.FromSeconds(castTime));
+            //это не прерывается
             PayCost();
             var cooldown = GetCooldown();
             StartCooldown(cooldown);
@@ -88,12 +91,12 @@ namespace GOBA.CORE
 
         public IUnit GetOwner()
         {
-            return DIContainer.EntityManager.GetEntity(_ownerEntityId) as IUnit;
+            return DIContainer.EntityManager.GetEntity(_ownerEntityId.Value) as IUnit;
         }
 
         public void SetOwner(int ownerEntityId)
         {
-            _ownerEntityId = ownerEntityId;
+            _ownerEntityId.Value = ownerEntityId;
         }
 
         public float GetCastTime()
@@ -105,7 +108,7 @@ namespace GOBA.CORE
 
         public float GetCooldownTimeRemaining()
         {
-            return _cooldown;
+            return _cooldown.Value;
         }
 
         public float GetCooldown(int level = -1)
@@ -126,7 +129,7 @@ namespace GOBA.CORE
         public void EndCooldown()
         {
             _cooldownCancellationSource?.Cancel();
-            _cooldown = 0f;
+            _cooldown.Value = 0f;
         }
 
         #endregion
@@ -156,12 +159,12 @@ namespace GOBA.CORE
 
         public int GetLevel()
         {
-            return _level;
+            return _level.Value;
         }
 
         public void SetLevel(int level)
         {
-            _level = Math.Clamp(level, 0, GetMaxLevel());
+            _level.Value = Mathf.Clamp(level, 0, GetMaxLevel());
         }
 
         public int GetMaxLevel()
@@ -192,27 +195,47 @@ namespace GOBA.CORE
 
             if (type.IsEnum)
             {
-                var intValue = _abilityDefinition.Data.Value<int>(key);
+                var intValue = _abilityDefinition.Value.Data.Value<int>(key);
                 result = (T)Enum.ToObject(type, intValue);
             }
             else if (type.IsArray || type.IsIEnumerable())
             {
-                result = _abilityDefinition.Data.SelectToken(key).ToObject<T>();
+                result = _abilityDefinition.Value.Data.SelectToken(key).ToObject<T>();
             }
             else
             {
-                result = _abilityDefinition.Data.Value<T>(key);
+                result = _abilityDefinition.Value.Data.Value<T>(key);
             }
 
             return result;
         }
 
+        private bool CanBeUsed()
+        {
+            var result = true;
+            var caster = GetOwner();
+
+            if (GetCooldownTimeRemaining() > 0)
+            {
+                Debug.LogWarning("COOLDOWN");
+                result = false;
+            }
+
+            if (GetCost() > caster.GetMana())
+            {
+                Debug.LogWarning("MANA");
+                result = false;
+            }
+            return result;
+        }
+
+
         private async UniTaskVoid StartCooldownAsync(float cooldown, CancellationToken cancellationToken)
         {
             var newCooldown = cooldown;
-            _cooldown = newCooldown;
+            _cooldown.Value = newCooldown;
 
-            while (_cooldown > 0f && cancellationToken.IsCancellationRequested == false)
+            while (_cooldown.Value > 0f && cancellationToken.IsCancellationRequested == false)
             {
                 await UniTask.NextFrame();
                 if (cancellationToken.IsCancellationRequested)
@@ -222,7 +245,7 @@ namespace GOBA.CORE
                 if (newCooldown < 0f)
                     newCooldown = 0f;
 
-                _cooldown = newCooldown;
+                _cooldown.Value = newCooldown;
             }
         }
     }

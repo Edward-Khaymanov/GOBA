@@ -1,18 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
-using System.Drawing;
-using System.Threading;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace GOBA.CORE
 {
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Collider))]
-    public class AbilityProjectile : GameEntity
+    public sealed class AbilityProjectile : GameEntity
     {
-        private Rigidbody _rigidbody;
+        [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private Collider _collider;
+        [SerializeField] private LayerMask _terrainMask;
+
         private float _speed;
         private AbilityBase _ability;
         private IUnit _source;
@@ -21,17 +17,11 @@ namespace GOBA.CORE
         private const float DEFAULT_LEVEL_Y = 40f;
         private const float RAYCAST_Y = 100f;
         private const float PROJECTILE_OFFSET_Y = 1f;
-        private int _terrainMask;
 
-        public virtual void Awake()
-        {
-            _rigidbody = GetComponent<Rigidbody>();
-            _terrainMask = LayerMask.GetMask("Terrain");
-        }
-
-        public void SetDependencies(IProjectileManager projectileManager)
+        public void Init(IProjectileManager projectileManager)
         {
             _projectileManager = projectileManager;
+            _collider.enabled = true;
         }
 
         public void SetAbility(AbilityBase ability)

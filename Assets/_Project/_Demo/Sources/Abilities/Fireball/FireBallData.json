@@ -10,7 +10,7 @@
 		"AbilityBehaviour": 4,
 		"AbilityUnitTargetType": 2,
 		"AbilityUnitTargetTeam": 8,
-		"ProjectileName": "CapsuleTemplate",
+		"ProjectileName": "fireball_vfx_test",
 		"ProjectileSpeed": 10,
 	}
 }

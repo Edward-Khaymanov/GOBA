@@ -21,16 +21,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - unit
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cec7fd021bf46a42bacc89ff8097eb4
+    m_Address: fireball_vfx_test
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityProjectile
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94e1c7df2c8f2c54a82f27001a0556da
     m_Address: FireballAbility
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a5169c6b5d67a6446b1dddf19da5ddc0
-    m_Address: CapsuleTemplate
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - AbilityProjectile
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7880c68b3187bf4e860ec4207668202
     m_Address: FireBallData

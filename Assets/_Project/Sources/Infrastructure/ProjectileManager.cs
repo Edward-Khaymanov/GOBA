@@ -1,13 +1,12 @@
 ﻿using GOBA.CORE;
-using System;
-using UnityEngine;
+using Unity.Netcode;
 
 namespace GOBA
 {
     public class ProjectileManager : IProjectileManager
     {
         private readonly IProjectileProvider _projectileProvider;
-
+        //private readonly IParticleManager _particleManager;
         public ProjectileManager(IProjectileProvider projectileProvider)
         {
             _projectileProvider = projectileProvider;
@@ -15,9 +14,13 @@ namespace GOBA
 
         public int CreateLinearProjectile(LinearProjectileOptions options)
         {
-            var projectileTemplate = _projectileProvider.GetProjectileTemplate(options.ProjectileName);
-            var projectile = GameObject.Instantiate(projectileTemplate, options.SpawnPosition, Quaternion.identity);
+            var projectile = _projectileProvider.GetProjectileWrapper();
+            var projectileEffect = _projectileProvider.GetProjectile(options.ProjectileName);
+            projectile.Transform.position = options.SpawnPosition;
             projectile.NetworkObject.Spawn();
+            projectileEffect.GetComponent<NetworkObject>().Spawn();
+            projectileEffect.GetComponent<NetworkObject>().TrySetParent(projectile.Transform, false);
+            projectile.Init(this);
             projectile.SetAbility(options.Ability);
             projectile.SetSpeed(options.Speed);
             projectile.MoveToPoint(options.Direction);/////////временно

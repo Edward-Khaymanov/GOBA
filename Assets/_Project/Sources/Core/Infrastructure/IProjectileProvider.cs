@@ -1,7 +1,10 @@
-﻿namespace GOBA.CORE
+﻿using UnityEngine;
+
+namespace GOBA.CORE
 {
     public interface IProjectileProvider
     {
-        public AbilityProjectile GetProjectileTemplate(string projectileName);
+        public GameObject GetProjectile(string projectileName);
+        public AbilityProjectile GetProjectileWrapper();
     }
 }

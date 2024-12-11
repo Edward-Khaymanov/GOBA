@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using Unity.Netcode;
 
 namespace GOBA.CORE
 {
@@ -16,16 +18,38 @@ namespace GOBA.CORE
     */
 
     [Serializable]
-    public class AbilityDefinition
+    public class AbilityDefinition : INetworkSerializable, IEquatable<AbilityDefinition>
     {
         public int Id;
+        public string Name;
         public string PrefabName;
         public string IconTextureName;
-        public string Name;
         public string DescriptionKey;
         //public JObject Art;
         //public JObject Data;
         //public JObject SpecialValues;
         public JObject Data;
+
+        public bool Equals(AbilityDefinition other)
+        {
+            return this.Id == other.Id;
+        }
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Id);
+            if (serializer.IsWriter)
+            {
+                var writer = serializer.GetFastBufferWriter();
+                var json = JsonConvert.SerializeObject(Data);
+                writer.WriteValueSafe(json);
+            }
+            else
+            {
+                var reader = serializer.GetFastBufferReader();
+                reader.ReadValueSafe(out string json);
+                Data = JObject.Parse(json);
+            }
+        }
     }
 }
