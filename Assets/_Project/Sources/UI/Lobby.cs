@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace GOBA
 {
@@ -13,6 +14,7 @@ namespace GOBA
         [SerializeField] private SetupLevel _setupLevelTemplate;
 
         private LobbyData _lobbyData;
+        private Button _startGameButton;
 
         private void Update()
         {
@@ -33,6 +35,9 @@ namespace GOBA
             {
                 base.NetworkManager.OnClientConnectedCallback += OnClientConnected;
                 base.NetworkManager.SceneManager.OnLoadComplete += OnLoadedScene;
+                _startGameButton = GameObject.FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(x => x.name == "StartGameButton");
+                _startGameButton.gameObject.SetActive(true);
+                _startGameButton.onClick.AddListener(LoadScene);
                 Init();
             }
         }
@@ -43,6 +48,7 @@ namespace GOBA
 
             if (base.NetworkManager.IsServer)
             {
+                _startGameButton.onClick.RemoveListener(StartGame);
                 base.NetworkManager.OnClientConnectedCallback -= OnClientConnected;
                 base.NetworkManager.SceneManager.OnLoadComplete -= OnLoadedScene;
             }
@@ -56,8 +62,8 @@ namespace GOBA
             //ClientAuthenticated?.Invoke(clientId);
 
             var randomId = Random.Range(1, 4);
-            var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == randomId);
-            //var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == 1);
+            //var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == randomId);
+            var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == 1);
             MyLogger.Log(team.Id);
             var netUser = new NetworkUser(clientId, System.Guid.NewGuid().ToString());
             var sessionUser = new SessionUser()
@@ -138,7 +144,7 @@ namespace GOBA
         {
             var setLevel = Instantiate(_setupLevelTemplate);
             setLevel.NetworkObject.Spawn();
-            setLevel.SetupGame(_lobbyData, false);
+            setLevel.SetupGame(_lobbyData, true);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace GOBA
         public string CurrentTime => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
 
 
-        public async UniTask SetupGame(LobbyData lobbyData, bool test)
+        public async UniTask SetupGame(LobbyData lobbyData, bool isTest)
         {
             var projectileProvider = new ProjectileProvider();
             var addressablesProvider = new AddressablesProvider();
@@ -43,18 +43,10 @@ namespace GOBA
             _abilityProvider = abilityProvider;
 
             ServerFunctions.Init(DIContainer.EntityManager, _particleManager, _projectileManager, _projectileProvider, _abilityProvider);
-
-            if (test)
-            {
-                //await TestSetup(lobbyData);
-            }
-            else
-            {
-                await Setup(lobbyData);
-            }
+            await Setup(lobbyData, isTest);
         }
 
-        private async UniTask Setup(LobbyData lobbyData)
+        private async UniTask Setup(LobbyData lobbyData, bool isTest)
         {
             MyLogger.Log("Setup");
 
@@ -69,6 +61,11 @@ namespace GOBA
             await UniTask.NextFrame();
             var usersHeroes = await SpawnHeroes(terrain.Spawnpoints, lobbyData.SessionTeams);
             await UniTask.NextFrame();
+            if (isTest)
+            {
+            SpawnTestUnits(terrain.Spawnpoints.FirstOrDefault(x => x.Id == 1).transform.position);
+            await UniTask.NextFrame();
+            }
             StartGame(usersHeroes);
         }
 
@@ -164,6 +161,27 @@ namespace GOBA
             PlayerLocalDependencies.PlayerInput.Enable();
             PlayerLocalDependencies.BarsRenderer.Enable();
             PlayerLocalDependencies.PlayerInput.SelectUnits(new List<IUnit>() { unit });
+        }
+
+
+        private async UniTask SpawnTestUnits(Vector3 center)
+        {
+            var positions = new List<Vector3>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                var pos = center;
+                pos.x += i * 6;
+                for (int k = 0; k < 2; k++)
+                {
+                    pos.z += k * 6;
+                    positions.Add(pos);
+                }
+            }
+
+            await ServerFunctions.SpawnHero(1, 1, positions[1]);
+            await ServerFunctions.SpawnHero(1, 2, positions[2]);
+            await ServerFunctions.SpawnHero(1, 3, positions[3]);
         }
     }
 }
