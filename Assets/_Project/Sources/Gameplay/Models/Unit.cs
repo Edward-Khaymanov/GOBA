@@ -13,9 +13,13 @@ namespace GOBA
         [SerializeField] private UnitCanvas _unitCanvas;
         [SerializeField] private NavMeshAgent _navigationAgent;
 
-        private float _manaBase = 100f;
+        //private float _manaBase = 100f;
+        private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
         private NetworkVariable<float> _manaCurrent = new NetworkVariable<float>(400f);
-        private NetworkVariable<float> _manaMax = new NetworkVariable<float>(10000000f);
+        private NetworkVariable<float> _manaMax = new NetworkVariable<float>(1000f);
+        private NetworkVariable<float> _healthCurrent = new NetworkVariable<float>(300f);
+        private NetworkVariable<float> _healthMax = new NetworkVariable<float>(500f);
+        private NetworkVariable<int> _teamId = new NetworkVariable<int>(-1);
 
 
         protected NavMeshAgent NavAgent => _navigationAgent;
@@ -86,11 +90,34 @@ namespace GOBA
             _manaCurrent.Value = Mathf.Clamp(_manaCurrent.Value - Mathf.Abs(amount), 0, _manaMax.Value);
         }
 
+        public float GetHealth()
+        {
+            return _healthCurrent.Value;
+        }
+
+        public float GetMaxHealth()
+        {
+            return _healthMax.Value;
+        }
+
         public float GetMana()
         {
             return _manaCurrent.Value;
         }
 
-        public abstract void AddAbility(AbilityBase ability);
+        public float GetMaxMana()
+        {
+            return _manaMax.Value;
+        }
+
+        public void SetTeam(int teamId)
+        {
+            _teamId.Value = teamId;
+        }
+
+        public int GetTeam()
+        {
+            return _teamId.Value;
+        }
     }
 }
