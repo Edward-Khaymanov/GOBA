@@ -1,6 +1,6 @@
 ﻿using GOBA.CORE;
 
-namespace GOBA.Assets._Project.Sources._Test
+namespace GOBA
 {
     public class UseAbilityCommand : ICommand
     {

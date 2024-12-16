@@ -6,12 +6,16 @@ namespace GOBA
 {
     public class EntityManager : IEntityManager
     {
-        private HashSet<IGameEntity> _entities;
+        private readonly Dictionary<int, IGameEntity> _entities;
+        private IPlayerController _localPlayerController;
         private int _currentAvailableEntityId;
+
+        public event System.Action<IGameEntity> EntitySpawned;
 
         public EntityManager()
         {
-            Reset();
+            _entities = new Dictionary<int, IGameEntity>();
+            _currentAvailableEntityId = int.MinValue;
         }
 
         public int GetAvailableEntityId()
@@ -21,33 +25,60 @@ namespace GOBA
 
         public void AddEntity(IGameEntity entity)
         {
-            _entities.Add(entity);
+            if (_entities.TryAdd(entity.EntityId, entity))
+            {
+                if (entity is IPlayerController controller && controller.NetworkBehaviour.IsOwner)
+                {
+                    _localPlayerController = controller;
+                }
+
+                EntitySpawned?.Invoke(entity);
+            }
         }
 
         public IGameEntity GetEntity(int entityId)
         {
-            return _entities.FirstOrDefault(x => x.EntityId == entityId);
+            return _entities.GetValueOrDefault(entityId);
         }
 
         public void RemoveEntity(IGameEntity entity)
         {
-            _entities.Remove(entity);
+            _entities.Remove(entity.EntityId);
         }
 
         public void RemoveEntity(int entityId)
         {
-            _entities.RemoveWhere(x => x.EntityId == entityId);
+            _entities.Remove(entityId);
         }
 
-        public void Reset()
+        public ICollection<IGameEntity> GetEntities(IEnumerable<int> entitiesId)
         {
-            _entities = new HashSet<IGameEntity>();
-            _currentAvailableEntityId = int.MinValue;
+            return _entities.Where(x => entitiesId.Contains(x.Key)).Select(x => x.Value).ToArray();
         }
 
-        public IEnumerable<IGameEntity> GetEntities(IEnumerable<int> entitiesId)
+        public ICollection<IGameEntity> GetEntities()
         {
-            return _entities.Where(x => entitiesId.Contains(x.EntityId));
+            return _entities.Values;
+        }
+
+        public IUnit GetUnit(int entityId)
+        {
+            var result = default(IUnit);
+            if (_entities.TryGetValue(entityId, out var entity) && entity is IUnit unit)
+            {
+                result = unit;
+            }
+            return result;
+        }
+
+        public ICollection<IUnit> GetUnits()
+        {
+            return _entities.Values.Where(x => x is IUnit unit).Cast<IUnit>().ToArray();
+        }
+
+        public IPlayerController GetLocalPlayerController()
+        {
+            return _localPlayerController;
         }
     }
 }

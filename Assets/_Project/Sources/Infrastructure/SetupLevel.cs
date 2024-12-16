@@ -1,13 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
-using GOBA.Assets._Project.Sources._Test;
-using GOBA.Network;
 using GOBA.CORE;
+using GOBA.Network;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Unity.AI.Navigation;
-using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -15,19 +12,21 @@ namespace GOBA
 {
     public class SetupLevel : NetworkBehaviour
     {
-        [SerializeField] public Hero _heroTemplate;
         [SerializeField] public Level _terrainTemplate;
         [SerializeField] public HeroSelectionMenu _heroSelectionMenu;
         [SerializeField] public MainCommandSender _mainCommandSender;
+        [SerializeField] public PlayerController _playerControllerTemplate;
 
         private IProjectileManager _projectileManager;
         private IProjectileProvider _projectileProvider;
         private IParticleManager _particleManager;
         private AbilityProvider _abilityProvider;
 
+        private readonly Dictionary<UserID, PlayerController> _usersPlayers = new();
+        private Dictionary<UserID, int> _usersSelectedHero = new();
+
         public string CurrentTime => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
 
-        private Dictionary<ulong, int> _clientsSelectedHero;
 
         public async UniTask SetupGame(LobbyData lobbyData, bool test)
         {
@@ -43,7 +42,7 @@ namespace GOBA
             _particleManager = null;
             _abilityProvider = abilityProvider;
 
-            DevCheats.Init(DIContainer.EntityManager, _particleManager, _projectileManager, _projectileProvider, _abilityProvider);
+            ServerFunctions.Init(DIContainer.EntityManager, _particleManager, _projectileManager, _projectileProvider, _abilityProvider);
 
             if (test)
             {
@@ -59,24 +58,55 @@ namespace GOBA
         {
             MyLogger.Log("Setup");
 
-            var terrain = Instantiate(_terrainTemplate);
-            terrain.NetworkObject.Spawn(true);
+            var terrain = await SpawnTerrain();
             var commandSender = Instantiate(_mainCommandSender);
             commandSender.NetworkObject.Spawn(true);
-
             var targetClients = HELPERS.GetClientsRPC(lobbyData.SessionUsers.Select(x => x.NetworkUser.ClientId));
-            await SelectionMenu(targetClients);
+
+            await SetupPlayers(lobbyData.SessionUsers);
             await UniTask.NextFrame();
-            await SpawnHeroes(terrain.Spawnpoints, lobbyData.SessionTeams);
+            await SelectionMenu(lobbyData.SessionUsers, targetClients);
             await UniTask.NextFrame();
-            BakeLevelRpc(terrain.NetworkObject);
+            var usersHeroes = await SpawnHeroes(terrain.Spawnpoints, lobbyData.SessionTeams);
             await UniTask.NextFrame();
-            OnGameStartedRpc();
+            StartGame(usersHeroes);
         }
 
-        private async UniTask SpawnHeroes(List<TeamSpawnpoint> teamSpawnpoints, List<SessionTeam> lobbyTeams)
+        private void StartGame(Dictionary<SessionUser, Hero> usersHeroes)
         {
+            foreach (var item in usersHeroes)
+            {
+                OnGameStartedRpc(item.Value.EntityId, RpcTarget.Single(item.Key.NetworkUser.ClientId, RpcTargetUse.Temp));
+            }
+        }
+
+        private async UniTask SetupPlayers(IEnumerable<SessionUser> players)
+        {
+            var newId = 1;
+            foreach (var sessionUser in players)
+            {
+                var playerController = GameObject.Instantiate(_playerControllerTemplate);
+                playerController.NetworkObject.SpawnWithOwnership(sessionUser.NetworkUser.ClientId);
+                playerController.NetworkObject.NetworkShow(sessionUser.NetworkUser.ClientId);
+                playerController.SetPlayerId(newId);
+                playerController.SetPlayerTeam(sessionUser.Team.Id);
+                newId++;
+                _usersPlayers.Add(sessionUser.UserId, playerController);
+            }
+        }
+
+        private async UniTask<Level> SpawnTerrain()
+        {
+            var terrain = Instantiate(_terrainTemplate);
+            terrain.NetworkObject.Spawn(true);
+            return terrain;
+        }
+
+        private async UniTask<Dictionary<SessionUser, Hero>> SpawnHeroes(List<TeamSpawnpoint> teamSpawnpoints, List<SessionTeam> lobbyTeams)
+        {
+            var result = new Dictionary<SessionUser, Hero>();
             var positionOffset = Vector3.zero;
+
             foreach (var team in lobbyTeams)
             {
                 var spawnPosition = teamSpawnpoints.FirstOrDefault(x => x.Id == team.Id).transform.position;
@@ -85,109 +115,55 @@ namespace GOBA
                     spawnPosition += positionOffset;
                     positionOffset += Vector3.right;
 
-                    var userClientRpc = RpcTarget.Single(sessionUser.NetworkUser.ClientId, RpcTargetUse.Temp);
-                    var heroId = _clientsSelectedHero[sessionUser.NetworkUser.ClientId];
-                    var hero = await SpawnHero(team.Id, heroId, spawnPosition, sessionUser.NetworkUser.ClientId);
-                    var playerCameraPosition = new Vector3(hero.transform.position.x, hero.transform.position.y + 20, hero.transform.position.z - 10);
-
-                    SetCameraRpc(playerCameraPosition, userClientRpc);
-                    InitLocalClientRpc(hero, userClientRpc);
-                    await UniTask.NextFrame();
+                    var heroId = _usersSelectedHero[sessionUser.UserId];
+                    var hero = await ServerFunctions.SpawnHero(heroId, team.Id, spawnPosition);
+                    var ability = ServerFunctions.AddAbilityToUnit("Fireball", hero);
+                    ability.SetLevel(1);
+                    result.Add(sessionUser, hero);
                 }
                 positionOffset = Vector3.zero;
             }
+
+            return result;
         }
 
-        private async UniTask<Hero> SpawnHero(int teamId, int heroId, Vector3 spawnPosition, ulong ownerClientId)
+        private async UniTask SelectionMenu(List<SessionUser> sessionUsers, ClientRpcParams targetClients)
         {
-            MyLogger.Log("SpawnHero");
+            foreach (var sessionUser in sessionUsers)
+            {
+                _usersSelectedHero.TryAdd(sessionUser.UserId, 1);//YBOT
+            }
+            //_clientsSelectedHero = new Dictionary<ulong, int>();
 
-            var heroAsset = UnitAssetProvider.GetHero(heroId);
-            var hero = Instantiate(_heroTemplate, spawnPosition, Quaternion.identity);
-            var heroModel = Instantiate(heroAsset.Model);
-
-            //var rpcTarget = RpcTarget.Group(
-            //                new ulong[]
-            //                {
-            //                    NetworkManager.ServerClientId,
-            //                    ownerClientId,
-            //                }, RpcTargetUse.Temp);
-
-            hero.NetworkObject.SpawnWithOwnership(ownerClientId);
-            await UniTask.NextFrame();
-            heroModel.GetComponent<NetworkObject>().SpawnWithOwnership(ownerClientId);
-            await UniTask.NextFrame();
-            heroModel.GetComponent<NetworkObject>().TrySetParent(hero.NetworkBehaviour.NetworkObject, false);
-            hero.Initialize(heroId, teamId);
-            var ability = DevCheats.AddAbilityToUnit("Fireball", hero);
-            ability.SetLevel(1);
-            return hero;
+            //var clientsId = targetClients.Send.TargetClientIds;
+            //var menu = Instantiate(_heroSelectionMenu);
+            //menu.ClientHeroSelected += OnClientSelectedHero;
+            //menu.NetworkObject.Spawn();
+            //menu.StartSelecting(targetClients);
+            //await UniTask.WaitWhile(() => clientsId.Except(_clientsSelectedHero.Keys).Any());
+            //menu.ClientHeroSelected -= OnClientSelectedHero;
+            //menu.NetworkObject.Despawn();
         }
 
-        private async UniTask SelectionMenu(ClientRpcParams targetClients)
-        {
-            _clientsSelectedHero = new Dictionary<ulong, int>();
-
-            var clientsId = targetClients.Send.TargetClientIds;
-            var menu = Instantiate(_heroSelectionMenu);
-            menu.ClientHeroSelected += OnClientSelectedHero;
-            menu.NetworkObject.Spawn();
-            menu.StartSelecting(targetClients);
-            await UniTask.WaitWhile(() => clientsId.Except(_clientsSelectedHero.Keys).Any());
-            menu.ClientHeroSelected -= OnClientSelectedHero;
-            menu.NetworkObject.Despawn();
-        }
-
-        private void OnClientSelectedHero(ulong clientId, int heroId)
-        {
-            _clientsSelectedHero.TryAdd(clientId, heroId);
-        }
-
-
-
-
-
+        //private void OnClientSelectedHero(ulong clientId, int heroId)
+        //{
+        //    _usersSelectedHero.TryAdd(clientId, heroId);
+        //}
 
 
         [Rpc(SendTo.SpecifiedInParams)]
-        public void InitLocalClientRpc(NetworkBehaviourReference heroReference, RpcParams rpcParams)
+        private void OnGameStartedRpc(int unitEnityId, RpcParams rpcParams)
         {
-            MyLogger.Log("InitLocalClientRpc");
+            PlayerLocalDependencies.Init();
+            PlayerLocalDependencies.PlayerUI.Init();
+            PlayerLocalDependencies.PlayerCamera.Init();
+            PlayerLocalDependencies.PlayerInput.Init();
 
-            heroReference.TryGet(out Hero hero);
-
-            var playerCamera = FindAnyObjectByType<PlayerCamera>();
-            var playerInput = FindAnyObjectByType<PlayerInput>();
-            var playerUI = FindAnyObjectByType<PlayerUI>();
-            //var input = new InputSystemHeroController(hero, playerCamera);
-
-            playerCamera.Init();
-            playerInput.Init(playerCamera, playerUI);
-            playerInput.SelectUnits(new List<IUnit>() { hero });
-        }
-
-        [Rpc(SendTo.SpecifiedInParams)]
-        public void SetCameraRpc(Vector3 newPosition, RpcParams rpcParams)
-        {
-            MyLogger.Log("SetCameraRpc");
-            var camera = FindAnyObjectByType<PlayerCamera>();
-            camera.transform.position = newPosition;
-        }
-
-        [Rpc(SendTo.ClientsAndHost)]
-        public void BakeLevelRpc(NetworkObjectReference terrainReference)
-        {
-            MyLogger.Log("BakeLevelRpc");
-            terrainReference.TryGet(out NetworkObject terrainNetworkObject);
-            terrainNetworkObject.TryGetComponent<NavMeshSurface>(out NavMeshSurface navMeshSurface);
-            navMeshSurface.BuildNavMesh();
-        }
-
-        [Rpc(SendTo.ClientsAndHost)]
-        public void OnGameStartedRpc()
-        {
-            var playerInput = FindAnyObjectByType<PlayerInput>();
-            playerInput.Enable();
+            var unit = DIContainer.EntityManager.GetUnit(unitEnityId);
+            PlayerLocalDependencies.PlayerCamera.CenterCameraOnUnit(unit);
+            PlayerLocalDependencies.PlayerInput.Enable();
+            PlayerLocalDependencies.BarsRenderer.Enable();
+            PlayerLocalDependencies.PlayerInput.SelectUnits(new List<IUnit>() { unit });
         }
     }
 }

@@ -22,6 +22,7 @@ namespace GOBA
         public const string MAIN_MENU_SCENE_NAME = "MainMenu";
         public const string LOBBY_SCENE_NAME = "Lobby";
 
+        public const string HERO_TEMPLATE_KEY = "HeroTemplate";
 
         public class Layers
         {

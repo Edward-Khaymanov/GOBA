@@ -1,4 +1,6 @@
-﻿namespace GOBA.CORE
+﻿using UnityEngine;
+
+namespace GOBA.CORE
 {
     public static class DIContainer
     {

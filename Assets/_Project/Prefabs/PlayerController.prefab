@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &559765505161181243
+--- !u!1 &8932158475678258079
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2103719644189449282}
-  - component: {fileID: 1317009527455677246}
-  - component: {fileID: 1543562562289337700}
+  - component: {fileID: 2102745772015827331}
+  - component: {fileID: 6478134958849967396}
+  - component: {fileID: 5452489992287957781}
   m_Layer: 0
-  m_Name: SetupLevel
+  m_Name: PlayerController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2103719644189449282
+--- !u!4 &2102745772015827331
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559765505161181243}
+  m_GameObject: {fileID: 8932158475678258079}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,19 +33,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1317009527455677246
+--- !u!114 &6478134958849967396
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559765505161181243}
+  m_GameObject: {fileID: 8932158475678258079}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 23193604
+  GlobalObjectIdHash: 1724199991
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -53,31 +53,21 @@ MonoBehaviour:
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
+  SpawnWithObservers: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 0
   SyncOwnerTransformWhenParented: 0
   AllowOwnerToParent: 0
---- !u!114 &1543562562289337700
+--- !u!114 &5452489992287957781
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559765505161181243}
+  m_GameObject: {fileID: 8932158475678258079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dacb3bdc5ef092542a29e1c14ad565b0, type: 3}
+  m_Script: {fileID: 11500000, guid: cc1da0be66d062046911d54e56b461d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _heroTemplate: {fileID: -6943764253133285655, guid: e6de2300fd761f84a9169f496c573f2f,
-    type: 3}
-  _terrainTemplate: {fileID: 2476622069183275961, guid: 3be37d93d0186264794c3dd2bd7d7188,
-    type: 3}
-  _heroSelectionMenu: {fileID: 7035718235537175708, guid: 50c024eef4e3dad43aeedec4e6c156e5,
-    type: 3}
-  _mainCommandSender: {fileID: 6762850287218101366, guid: c9d803241fd470f40b9f4f3e6f97ff84,
-    type: 3}
-  _playerControllerTemplate: {fileID: 5452489992287957781, guid: 4053fe2ccc1cf32469c5eea4ee89e61e,
-    type: 3}

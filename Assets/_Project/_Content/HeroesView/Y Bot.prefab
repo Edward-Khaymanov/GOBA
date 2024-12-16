@@ -1695,7 +1695,7 @@ GameObject:
   - component: {fileID: 3927935299648725578}
   - component: {fileID: 2263471205912902875}
   - component: {fileID: 6201814767829343369}
-  - component: {fileID: 4691336424561249067}
+  - component: {fileID: 1589869688236810924}
   m_Layer: 0
   m_Name: Y Bot
   m_TagString: Untagged
@@ -1747,6 +1747,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 3247239158
   InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -1754,6 +1756,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!95 &6201814767829343369
 Animator:
   serializedVersion: 7
@@ -1776,7 +1780,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4691336424561249067
+--- !u!114 &1589869688236810924
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1785,9 +1789,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5751406676633213967}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f1adeab7de2ca14597e5b9bd1ade94b, type: 3}
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 6201814767829343369}
 --- !u!1 &5942867546986581521

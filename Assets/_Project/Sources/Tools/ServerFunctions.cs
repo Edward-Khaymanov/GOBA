@@ -1,9 +1,11 @@
-﻿using GOBA.CORE;
+﻿using Cysharp.Threading.Tasks;
+using GOBA.CORE;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace GOBA
 {
-    public static class DevCheats
+    public static class ServerFunctions
     {
         private static IEntityManager _entityManager;
         private static IParticleManager _particleManager;
@@ -30,11 +32,13 @@ namespace GOBA
             var abilityDef = _abilityProvider.GetDefinition(abilityName);
             var abilityTemplate = _abilityProvider.GetAbilityTemplate(abilityDef.PrefabName);
             var ability = GameObject.Instantiate(abilityTemplate, Vector3.zero, Quaternion.identity);
+
             ability.NetworkObject.Spawn();
             ability.SetDependencies(_projectileManager, _particleManager);
             ability.Initialize(abilityDef);
             ability.SetOwner(unit.EntityId);
             unit.AddAbility(ability);
+
             return ability;
         }
 
@@ -42,6 +46,20 @@ namespace GOBA
         {
             var ability = _entityManager.GetEntity(abilityEntityId) as AbilityBase;
             ability.SetLevel(level);
+        }
+
+        public static async UniTask<Hero> SpawnHero(int heroId, int teamId, Vector3 position)
+        {
+            var heroTemplate = new AddressablesProvider().LoadByKey<GameObject>(CONSTANTS.HERO_TEMPLATE_KEY).GetComponent<Hero>();
+            var heroAsset = UnitAssetProvider.GetHero(heroId);
+            var hero = GameObject.Instantiate(heroTemplate, position, Quaternion.identity);
+            var heroModel = GameObject.Instantiate(heroAsset.Model, Vector3.zero, Quaternion.identity);
+            hero.SetTeam(teamId);
+            hero.NetworkObject.Spawn();
+            heroModel.GetComponent<NetworkObject>().Spawn();
+            heroModel.GetComponent<NetworkObject>().TrySetParent(hero.NetworkBehaviour.NetworkObject, false);
+            hero.Initialize();
+            return hero;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace GOBA
     [SelectionBase]
     public abstract class Unit : GameEntity, IUnit
     {
-        [SerializeField] private UnitCanvas _unitCanvas;
+        [SerializeField] private Collider _collider;
         [SerializeField] private NavMeshAgent _navigationAgent;
 
         //private float _manaBase = 100f;
@@ -23,6 +23,7 @@ namespace GOBA
 
 
         protected NavMeshAgent NavAgent => _navigationAgent;
+        protected Collider Collider => _collider;
 
         //public event Action OnDamageTaken;
         //public event Action<float, float> OnHealfChanged;
@@ -90,6 +91,8 @@ namespace GOBA
             _manaCurrent.Value = Mathf.Clamp(_manaCurrent.Value - Mathf.Abs(amount), 0, _manaMax.Value);
         }
 
+        public abstract void AddAbility(AbilityBase ability);
+
         public float GetHealth()
         {
             return _healthCurrent.Value;
@@ -108,6 +111,16 @@ namespace GOBA
         public float GetMaxMana()
         {
             return _manaMax.Value;
+        }
+
+        public bool IsDead()
+        {
+            return _isDead.Value;
+        }
+
+        public float GetHeight()
+        {
+            return _navigationAgent.height;
         }
 
         public void SetTeam(int teamId)

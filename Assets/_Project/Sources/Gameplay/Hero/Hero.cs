@@ -24,14 +24,12 @@ namespace GOBA
             _abilityList = new NetworkList<int>();
         }
 
-        public void Initialize(int heroId, int teamId)
+        public void Initialize()
         {
-            //var hero = UnitAssetProvider.GetHero(heroId);
-            //base.Init(heroId, teamId, hero.BaseStats);
-            //Attributes = hero.BaseAttributes;
             _view.Init();
             _abilityCancelationTokenSource = new CancellationTokenSource();
             NavAgent.enabled = true;
+            Collider.enabled = true;
         }
 
         public override IList<AbilityBase> GetAbilities()

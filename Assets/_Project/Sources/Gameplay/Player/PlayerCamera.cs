@@ -1,3 +1,4 @@
+using GOBA.CORE;
 using UnityEngine;
 
 namespace GOBA
@@ -60,6 +61,14 @@ namespace GOBA
 
             transform.position = newPosition;
             _offset.y += offsetHeight;
+        }
+
+        public void CenterCameraOnUnit(IUnit unit)
+        {
+            var playerCameraPosition = unit.Transform.position;
+            playerCameraPosition.y += 20;
+            playerCameraPosition.z -= 10;
+            transform.position = playerCameraPosition;
         }
 
     }

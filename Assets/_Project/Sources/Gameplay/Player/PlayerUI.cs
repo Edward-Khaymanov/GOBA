@@ -1,4 +1,5 @@
 using GOBA.CORE;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,8 +14,14 @@ namespace GOBA
         [SerializeField] private ProgressBarTexted _manaBar;
 
         private IUnit _target;
-        private UnitAsset _targetAsset;
+        private readonly UnitAsset _targetAsset;
         private readonly bool _targetIsHero;
+
+        public void Init()
+        {
+            PlayerLocalDependencies.PlayerInput.UnitsSelected += OnUnitsSelected;
+        }
+
 
 
         private void Update()
@@ -24,6 +31,11 @@ namespace GOBA
                 Fill();
 
             }
+        }
+
+        private void OnUnitsSelected(IList<IUnit> units)
+        {
+            OnSelectUnit(units[0]);
         }
 
         public void OnSelectUnit(IUnit unit)

@@ -56,13 +56,13 @@ namespace GOBA
             //ClientAuthenticated?.Invoke(clientId);
 
             var randomId = Random.Range(1, 4);
-            //var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == randomId);
-            var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == 1);
+            var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == randomId);
+            //var team = _lobbyData.SessionTeams.FirstOrDefault(x => x.Id == 1);
             MyLogger.Log(team.Id);
             var netUser = new NetworkUser(clientId, System.Guid.NewGuid().ToString());
             var sessionUser = new SessionUser()
             {
-                UserId = (ulong)Random.Range(1, int.MaxValue),
+                UserId = new UserID((ulong)Random.Range(1, int.MaxValue)),
                 NetworkUser = netUser,
                 State = UserState.Authenticated,
             };

@@ -1,7 +1,7 @@
-using GOBA.DEMO1;
 using Cysharp.Threading.Tasks;
-using GOBA.Assets._Project.Sources._Test;
 using GOBA.CORE;
+using GOBA.DEMO1;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,12 +14,12 @@ namespace GOBA
         private RaycastHit[] _mouseHits;
         private IList<IUnit> _selectedUnits;//unit group ג האכüםוירול?
         private PlayerCamera _playerCamera;
-        private PlayerUI _playerUI;
 
-        public void Init(PlayerCamera playerCamera, PlayerUI playerUI)
+        public event Action<IList<IUnit>> UnitsSelected;
+
+        public void Init()
         {
-            _playerCamera = playerCamera;
-            _playerUI = playerUI;
+            _playerCamera = PlayerLocalDependencies.PlayerCamera;
             _mouseHits = new RaycastHit[100];
             _selectedUnits = new List<IUnit>();
         }
@@ -39,7 +39,6 @@ namespace GOBA
         {
             if (_enabled == false)
                 return;
-            MyLogger.Log("player input Update");
 
             RaycastMousePosition();
             HandleCamera();
@@ -147,7 +146,7 @@ namespace GOBA
         public void SelectUnits(IList<IUnit> units)
         {
             _selectedUnits = units;
-            _playerUI.OnSelectUnit(_selectedUnits[0]);
+            UnitsSelected?.Invoke(_selectedUnits);
         }
 
         private async UniTaskVoid ActivateAbility(AbilityBase ability)

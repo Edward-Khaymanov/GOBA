@@ -11,7 +11,6 @@ namespace GOBA
     public class Startup : MonoBehaviour
     {
         [SerializeField] private SetupLevel _setupLevelTemplate;
-        [SerializeField] private bool _loadDemo;
 
         private void Start()
         {
@@ -24,51 +23,12 @@ namespace GOBA
             var entityManager = new EntityManager();
             DIContainer.EntityManager = entityManager;
 
-            if (_loadDemo)
-                StartDemo().Forget();
-            else
-                StartGame();
+            StartGame();
         }
 
         private void StartGame()
         {
             SceneManager.LoadScene(CONSTANTS.MAIN_MENU_SCENE_INDEX);
-        }
-
-        private async UniTaskVoid StartDemo()
-        {
-            DontDestroyOnLoad(gameObject);
-            new ConnectionManager().StartHost(CONSTANTS.DEFAULT_PORT);
-            await SceneManager.LoadSceneAsync(CONSTANTS.GAME_SCENE_INDEX, LoadSceneMode.Single);
-
-            var setupLevel = Instantiate(_setupLevelTemplate);
-            setupLevel.NetworkObject.Spawn();
-
-            var teams = new List<SessionTeam>()
-            {
-                new SessionTeam(1, 4),
-                new SessionTeam(2, 4),
-                new SessionTeam(3, 4),
-                new SessionTeam(4, 4),
-            };
-
-            var users = new List<SessionUser>()
-            {
-                new SessionUser()
-                {
-                    UserId = 00001,
-                    State = UserState.LoadedScene,
-                    NetworkUser = new NetworkUser(0, "zxcqwe"),
-                    Team = teams[0]
-                }
-            };
-
-            teams[0].Users.Add(users[0]);
-
-            var lobbyDataTest = new LobbyData(Guid.NewGuid(), 10, users, teams);
-            setupLevel.SetupGame(lobbyDataTest, true).Forget();
-
-            Destroy(gameObject);
         }
     }
 }

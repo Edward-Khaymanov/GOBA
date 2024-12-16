@@ -2,7 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace GOBA.Assets._Project.Sources._Test
+namespace GOBA
 {
     public interface ICommandSender
     {
