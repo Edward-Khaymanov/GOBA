@@ -15,10 +15,45 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 08f46a1522201d0498e98fcf2117f5e1
   m_SerializeEntries:
+  - m_GUID: 34cc687bdbca11742ae74d3984b1e76d
+    m_Address: ErikaDef
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - unit
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cec7fd021bf46a42bacc89ff8097eb4
+    m_Address: fireball_vfx_test
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityProjectile
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94e1c7df2c8f2c54a82f27001a0556da
+    m_Address: FireballAbility
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a5169c6b5d67a6446b1dddf19da5ddc0
     m_Address: AbilityProjectileWrapper
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2237a36cc5b3f144a23d77a419972d0
+    m_Address: TestUnits/TrainingHero
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - unit
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7880c68b3187bf4e860ec4207668202
+    m_Address: FireBallData
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3b3bd4995d1b7341a7e5f7be1278f3c
+    m_Address: Ybot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - unit
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e6de2300fd761f84a9169f496c573f2f
     m_Address: HeroTemplate

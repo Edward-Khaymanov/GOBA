@@ -14,19 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Units
   m_GUID: dd31c4757b8c2ad44b5809d570ad478f
-  m_SerializeEntries:
-  - m_GUID: b2237a36cc5b3f144a23d77a419972d0
-    m_Address: TestUnits/TrainingHero
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - unit
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d3b3bd4995d1b7341a7e5f7be1278f3c
-    m_Address: Ybot
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - unit
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1a092a9b965f2e74c9a16ad8a10609ca, type: 2}
   m_SchemaSet:

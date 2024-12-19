@@ -226,7 +226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _setupLevelTemplate: {fileID: 1543562562289337700, guid: df4a8aaedabe8874090ea21b80b3b720,
     type: 3}
-  _loadDemo: 0
 --- !u!1 &1349952874
 GameObject:
   m_ObjectHideFlags: 0

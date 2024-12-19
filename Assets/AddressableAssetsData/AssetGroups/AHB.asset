@@ -14,30 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: AHB
   m_GUID: 0801413f856554b4f958e59fc5a5c211
-  m_SerializeEntries:
-  - m_GUID: 34cc687bdbca11742ae74d3984b1e76d
-    m_Address: ErikaDef
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - unit
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3cec7fd021bf46a42bacc89ff8097eb4
-    m_Address: fireball_vfx_test
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - AbilityProjectile
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 94e1c7df2c8f2c54a82f27001a0556da
-    m_Address: FireballAbility
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c7880c68b3187bf4e860ec4207668202
-    m_Address: FireBallData
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - AbilityData
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1a092a9b965f2e74c9a16ad8a10609ca, type: 2}
   m_SchemaSet:
