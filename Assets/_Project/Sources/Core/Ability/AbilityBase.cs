@@ -9,21 +9,26 @@ namespace GOBA.CORE
 {
     public abstract class AbilityBase : GameEntity
     {
+        protected IProjectileManager ProjectileManager;
+        protected IParticleManager ParticleManager;
+
+        private IEntityManager _entityManager;
+        private AbilityCastData _castData;
+        private CancellationTokenSource _cooldownCancellationSource;
+
         private NetworkVariable<int> _abilityId = new NetworkVariable<int>();
         private NetworkVariable<int> _ownerEntityId = new NetworkVariable<int>();
         private NetworkVariable<int> _level = new NetworkVariable<int>();
         private NetworkVariable<float> _cooldown = new NetworkVariable<float>();
         private NetworkVariable<AbilityDefinition> _abilityDefinition = new NetworkVariable<AbilityDefinition>();
-        private CancellationTokenSource _cooldownCancellationSource;
-        protected IProjectileManager ProjectileManager;
-        protected IParticleManager ParticleManager;
 
         public int AbilityId => _abilityId.Value;
 
-        public void SetDependencies(IProjectileManager projectileManager, IParticleManager particleManager)
+        public void SetDependencies(IProjectileManager projectileManager, IParticleManager particleManager, IEntityManager entityManager)
         {
             ProjectileManager = projectileManager;
             ParticleManager = particleManager;
+            _entityManager = entityManager;
         }
 
         public virtual void Initialize(AbilityDefinition definition)
@@ -34,18 +39,19 @@ namespace GOBA.CORE
 
         public async UniTask CastAbility(AbilityCastData castData)
         {
+            SetCastData(castData);
             var canBeUsed = CanBeUsed();
             if (canBeUsed == false)
                 return;
 
-            await OnAbilityPhaseStart(castData);
+            await OnAbilityPhaseStart();
             //включаем анимацию (может и не отсюда хз)
             var castTime = GetCastTime();
             //////////////////////////////////////ВСЕ ЧТО ДАЛЬШЕ НАДО КАК ТО ПРЕРВАТЬ, ЕСЛИ НАС ПРЕРВАЛИ
             canBeUsed = CanBeUsed();
             if (canBeUsed == false)
             {
-                OnAbilityPhaseInterrupted(castData);
+                OnAbilityPhaseInterrupted();
                 return;
             }
             await UniTask.Delay(TimeSpan.FromSeconds(castTime));
@@ -53,7 +59,7 @@ namespace GOBA.CORE
             PayCost();
             var cooldown = GetCooldown();
             StartCooldown(cooldown);
-            await OnSpellStart(castData);
+            await OnSpellStart();
         }
 
         public AbilityBehaviour GetBehaviour()
@@ -73,7 +79,7 @@ namespace GOBA.CORE
 
         public IUnit GetOwner()
         {
-            return DIContainer.EntityManager.GetEntity(_ownerEntityId.Value) as IUnit;
+            return _entityManager.GetEntity(_ownerEntityId.Value) as IUnit;
         }
 
         public void SetOwner(int ownerEntityId)
@@ -84,6 +90,16 @@ namespace GOBA.CORE
         public float GetCastTime()
         {
             return GetDefinitionData<float>("CastTime");
+        }
+
+        public IUnit GetCastTarget()
+        {
+            return _entityManager.GetUnit(_castData.TargetEntityId);
+        }
+
+        public Vector3 GetCastPoint()
+        {
+            return _castData.CastPoint;
         }
 
         #region COOLDOWN
@@ -159,14 +175,14 @@ namespace GOBA.CORE
         #region EVENTS
 
         public virtual async UniTask<bool> OnProjectileHit() { return false; }
-        protected virtual async UniTask OnAbilityPhaseStart(AbilityCastData castData) { }
-        protected virtual async UniTask OnAbilityPhaseInterrupted(AbilityCastData castData) { }
-        protected virtual async UniTask OnSpellStart(AbilityCastData castData) => throw new NotImplementedException();
-        protected virtual async UniTask OnUpgrade() => throw new NotImplementedException();
-        protected virtual async UniTask OnOwnerSpawned() => throw new NotImplementedException();
-        protected virtual async UniTask OnOwnerDied() => throw new NotImplementedException();
-        protected virtual async UniTask OnHeroLevelUp() => throw new NotImplementedException();
-        protected abstract void OnSync<T>(BufferSerializer<T> serializer) where T : IReaderWriter;
+        protected virtual async UniTask OnAbilityPhaseStart() { }
+        protected virtual async UniTask OnAbilityPhaseInterrupted() { }
+        protected virtual async UniTask OnSpellStart() { }
+        protected virtual async UniTask OnUpgrade() { }
+        protected virtual async UniTask OnOwnerSpawned() { }
+        protected virtual async UniTask OnOwnerDied() { }
+        protected virtual async UniTask OnHeroLevelUp() { }
+        //protected abstract void OnSync<T>(BufferSerializer<T> serializer) where T : IReaderWriter;
 
         #endregion
 
@@ -229,6 +245,22 @@ namespace GOBA.CORE
 
                 _cooldown.Value = newCooldown;
             }
+        }
+
+
+        private void SetCastData(AbilityCastData castData)
+        {
+            _castData = castData;
+        }
+
+        private void ClearCastData()
+        {
+            _castData = default;
+        }
+
+        protected sealed override void OnSynchronize<T>(ref BufferSerializer<T> serializer)
+        {
+            base.OnSynchronize(ref serializer);
         }
     }
 }

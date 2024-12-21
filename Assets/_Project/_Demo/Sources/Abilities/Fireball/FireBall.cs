@@ -1,18 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
 using GOBA.CORE;
-using Unity.Netcode;
 
 namespace GOBA.DEMO1
 {
     public class FireBall : AbilityBase
     {
-        protected override void OnSync<T>(BufferSerializer<T> serializer)
-        {
-        }
-
-        protected override async UniTask OnSpellStart(AbilityCastData castData)
+        protected override async UniTask OnSpellStart()
         {
             var owner = GetOwner();
+            var castPoint = GetCastPoint();
             var castRadius = GetDefinitionData<float>("CastRadius");
             var projectileSpeed = GetDefinitionData<float>("ProjectileSpeed");
             var projectileName = GetDefinitionData<string>("ProjectileName");
@@ -20,12 +16,12 @@ namespace GOBA.DEMO1
             {
                 Ability = this,
                 Source = owner,
-                Direction = castData.CastPoint,
+                Direction = castPoint,
                 Speed = projectileSpeed,
                 ProjectileName = projectileName,
                 SpawnPosition = owner.Transform.position
             });
-            
+
             //projectile.SetScale(new Vector3(castRadius, castRadius, castRadius));
         }
     }

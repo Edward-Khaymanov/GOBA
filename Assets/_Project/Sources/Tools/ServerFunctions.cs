@@ -33,7 +33,7 @@ namespace GOBA
             var abilityTemplate = _abilityProvider.GetAbilityTemplate(abilityDef.PrefabName);
             var ability = GameObject.Instantiate(abilityTemplate, Vector3.zero, Quaternion.identity);
 
-            ability.SetDependencies(_projectileManager, _particleManager);
+            ability.SetDependencies(_projectileManager, _particleManager, _entityManager);
             ability.Initialize(abilityDef);
             ability.SetOwner(unit.EntityId);
             ability.NetworkObject.Spawn();
