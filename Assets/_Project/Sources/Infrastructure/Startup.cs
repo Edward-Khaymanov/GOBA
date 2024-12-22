@@ -19,7 +19,6 @@ namespace GOBA
 
         private async UniTaskVoid StartAsync()
         {
-            UnitAssetProvider.Initialize();
             var entityManager = new EntityManager();
             DIContainer.EntityManager = entityManager;
 

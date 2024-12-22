@@ -52,27 +52,27 @@ namespace GOBA
         [ClientRpc]
         private void LoadClientRpc(ClientRpcParams clientRpc)
         {
-            var heroes = UnitAssetProvider.GetHeroes();
-            var targetRows = Math.Ceiling((double)heroes.Count / MaxHeroesInRow);
+            //var heroes = UnitAssetProvider.GetHeroes();
+            //var targetRows = Math.Ceiling((double)heroes.Count / MaxHeroesInRow);
 
-            _layoutGroup.spacing = _rowSpacing;
+            //_layoutGroup.spacing = _rowSpacing;
 
-            for (int i = 0; i < targetRows; i++)
-            {
-                var row = AddRow();
-                row.SetHeight(_rowHeight);
-                row.SetSpacing(_heroSpacing);
+            //for (int i = 0; i < targetRows; i++)
+            //{
+            //    var row = AddRow();
+            //    row.SetHeight(_rowHeight);
+            //    row.SetSpacing(_heroSpacing);
 
-                var rowHeroes = heroes.Skip(i * MaxHeroesInRow).Take((i + 1) * MaxHeroesInRow);
+            //    var rowHeroes = heroes.Skip(i * MaxHeroesInRow).Take((i + 1) * MaxHeroesInRow);
 
-                foreach (var heroAsset in rowHeroes)
-                {
-                    var selection = AddHero(row.transform);
-                    selection.SetWidth(_heroWidth);
-                    selection.Init(heroAsset);
-                    selection.HeroSelected += OnHeroSelected;
-                }
-            }
+            //    foreach (var heroAsset in rowHeroes)
+            //    {
+            //        var selection = AddHero(row.transform);
+            //        selection.SetWidth(_heroWidth);
+            //        selection.Init(heroAsset);
+            //        selection.HeroSelected += OnHeroSelected;
+            //    }
+            //}
         }
 
         [ServerRpc(RequireOwnership = false)]

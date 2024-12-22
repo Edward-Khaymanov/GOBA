@@ -17,11 +17,6 @@ namespace GOBA
         [SerializeField] public MainCommandSender _mainCommandSender;
         [SerializeField] public PlayerController _playerControllerTemplate;
 
-        private IProjectileManager _projectileManager;
-        private IProjectileProvider _projectileProvider;
-        private IParticleManager _particleManager;
-        private AbilityProvider _abilityProvider;
-
         private readonly Dictionary<UserID, PlayerController> _usersPlayers = new();
         private Dictionary<UserID, int> _usersSelectedHero = new();
 
@@ -36,13 +31,10 @@ namespace GOBA
             var projectileManager = new ProjectileManager(projectileProvider);
             var abilityProvider = new AbilityProvider();
             await abilityProvider.Initialize(addressablesProvider);
+            var unitAssetProvider = new UnitAssetProvider();
+            unitAssetProvider.Initialize(addressablesProvider);
 
-            _projectileProvider = projectileProvider;
-            _projectileManager = projectileManager;
-            _particleManager = null;
-            _abilityProvider = abilityProvider;
-
-            ServerFunctions.Init(DIContainer.EntityManager, _particleManager, _projectileManager, _projectileProvider, _abilityProvider);
+            ServerFunctions.Init(DIContainer.EntityManager, null, projectileManager, projectileProvider, abilityProvider, addressablesProvider, unitAssetProvider);
             await Setup(lobbyData, isTest);
         }
 
@@ -63,13 +55,13 @@ namespace GOBA
             await UniTask.NextFrame();
             if (isTest)
             {
-            SpawnTestUnits(terrain.Spawnpoints.FirstOrDefault(x => x.Id == 1).transform.position);
-            await UniTask.NextFrame();
+                SpawnTestUnits(terrain.Spawnpoints.FirstOrDefault(x => x.Id == 1).transform.position);
+                await UniTask.NextFrame();
             }
             StartGame(usersHeroes);
         }
 
-        private void StartGame(Dictionary<SessionUser, Hero> usersHeroes)
+        private void StartGame(Dictionary<SessionUser, IUnit> usersHeroes)
         {
             foreach (var item in usersHeroes)
             {
@@ -99,9 +91,9 @@ namespace GOBA
             return terrain;
         }
 
-        private async UniTask<Dictionary<SessionUser, Hero>> SpawnHeroes(List<TeamSpawnpoint> teamSpawnpoints, List<SessionTeam> lobbyTeams)
+        private async UniTask<Dictionary<SessionUser, IUnit>> SpawnHeroes(List<TeamSpawnpoint> teamSpawnpoints, List<SessionTeam> lobbyTeams)
         {
-            var result = new Dictionary<SessionUser, Hero>();
+            var result = new Dictionary<SessionUser, IUnit>();
             var positionOffset = Vector3.zero;
 
             foreach (var team in lobbyTeams)

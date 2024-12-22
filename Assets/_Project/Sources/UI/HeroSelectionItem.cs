@@ -16,7 +16,7 @@ namespace GOBA
         public void Init(HeroAsset heroAsset)
         {
             HeroId = heroAsset.Id;
-            _iconRenderer.sprite = heroAsset.Icon;
+            //_iconRenderer.sprite = heroAsset.Icon;
         }
 
         public void SetWidth(float value)

@@ -27,6 +27,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - AbilityProjectile
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52fc3db4830a3c0489c56b260cfec17f
+    m_Address: YBotIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a865d1cb3b93674da10c9828f43eedb
+    m_Address: YBotModel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94e1c7df2c8f2c54a82f27001a0556da
     m_Address: FireballAbility
     m_ReadOnly: 0
@@ -37,12 +47,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2237a36cc5b3f144a23d77a419972d0
-    m_Address: TestUnits/TrainingHero
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - unit
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c7880c68b3187bf4e860ec4207668202
     m_Address: FireBallData
     m_ReadOnly: 0
@@ -50,7 +54,7 @@ MonoBehaviour:
     - AbilityData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d3b3bd4995d1b7341a7e5f7be1278f3c
-    m_Address: Ybot
+    m_Address: YBotDefinition
     m_ReadOnly: 0
     m_SerializedLabels:
     - unit

@@ -6,19 +6,19 @@ using UnityEngine;
 
 namespace GOBA
 {
-    public class AbilityProvider
+    public class AbilityProvider : IAbilityProvider
     {
-        private AddressablesProvider _addressablesProvider;
+        private IResourceProvider _resourceProvider;
         private Dictionary<string, AbilityDefinition> _nameData;
 
-        public async UniTask Initialize(AddressablesProvider addressablesProvider)
+        public async UniTask Initialize(IResourceProvider resourceProvider)
         {
-            _addressablesProvider = addressablesProvider;
+            _resourceProvider = resourceProvider;
             _nameData = new Dictionary<string, AbilityDefinition>();
-            var locations = _addressablesProvider.GetLocations<TextAsset>("AbilityData");
+            var locations = _resourceProvider.GetLocations<TextAsset>("AbilityData");
             foreach (var location in locations)
             {
-                var asset = _addressablesProvider.LoadByLocation<TextAsset>(location);
+                var asset = _resourceProvider.LoadByLocation<TextAsset>(location);
                 var abilityDefinition = JsonConvert.DeserializeObject<AbilityDefinition>(asset.text);
                 _nameData.Add(abilityDefinition.Name, abilityDefinition);
             }
@@ -31,7 +31,7 @@ namespace GOBA
 
         public AbilityBase GetAbilityTemplate(string prefabName)
         {
-            return _addressablesProvider.LoadByKey<GameObject>(prefabName).GetComponent<AbilityBase>();
+            return _resourceProvider.LoadByKey<GameObject>(prefabName).GetComponent<AbilityBase>();
         }
     }
 }

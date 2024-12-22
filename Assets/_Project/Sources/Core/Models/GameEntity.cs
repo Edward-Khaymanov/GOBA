@@ -3,7 +3,7 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace GOBA
+namespace GOBA.CORE
 {
     public abstract class GameEntity : NetworkBehaviour, IGameEntity
     {

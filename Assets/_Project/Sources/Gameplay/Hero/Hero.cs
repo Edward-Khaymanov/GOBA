@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace GOBA
 {
-    public class Hero : Unit
+    public class Hero : Unit, IHero
     {
         [SerializeField] private HeroView _view;
 

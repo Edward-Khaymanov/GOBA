@@ -6,7 +6,7 @@ namespace GOBA
     public class ProjectileManager : IProjectileManager
     {
         private readonly IProjectileProvider _projectileProvider;
-        //private readonly IParticleManager _particleManager;
+
         public ProjectileManager(IProjectileProvider projectileProvider)
         {
             _projectileProvider = projectileProvider;

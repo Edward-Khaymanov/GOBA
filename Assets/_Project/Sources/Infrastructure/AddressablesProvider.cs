@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using GOBA.CORE;
+using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace GOBA
 {
-    public class AddressablesProvider
+    public class AddressablesProvider : IResourceProvider
     {
         public IList<IResourceLocation> GetLocations<T>(object key)
         {
