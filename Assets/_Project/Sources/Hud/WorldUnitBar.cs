@@ -1,11 +1,11 @@
-﻿using DG.Tweening;
-using GOBA.CORE;
+﻿using GOBA.CORE;
 using UnityEngine;
 
 namespace GOBA
 {
     public class WorldUnitBar : MonoBehaviour
     {
+        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private ProgressBar _hpProgressBar;
         [SerializeField] private ProgressBar _manaProgressBar;
@@ -27,13 +27,13 @@ namespace GOBA
         public void Enable()
         {
             _isEnabled = true;
-            //показывать
+            _canvasGroup.alpha = 1.0f;
         }
 
         public void Disable()
         {
             _isEnabled = false;
-            //прятать
+            _canvasGroup.alpha = 0.0f;
         }
 
         private void SetColors()
@@ -43,7 +43,7 @@ namespace GOBA
 
             ColorUtility.TryParseHtmlString("#456ddd", out var fillcolor);
             ColorUtility.TryParseHtmlString("#152041", out var backcolor);
-            
+
             _manaProgressBar.SetFillColor(fillcolor);
             _manaProgressBar.SetBackColor(backcolor);
 
