@@ -71,5 +71,20 @@ namespace GOBA
             hero.Initialize();
             return hero;
         }
+
+        public static void ApplyDamage(IUnit target, IUnit attacker, float damage, DamageType damageType, AbilityBase ability = default)
+        {
+            var resistMultiplier = 0f;
+            damage = Mathf.Abs(damage);
+            damage = damage * (1 - resistMultiplier);
+            var newHealth = target.GetHealth() - damage;
+            target.SetHealth(newHealth);
+            //log damage
+            if (target.GetHealth() == 0)
+            {
+                target.Kill();
+                //log kill 
+            }
+        }
     }
 }
