@@ -3,6 +3,7 @@ using GOBA.CORE;
 using GOBA.DEMO1;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GOBA
@@ -162,6 +163,20 @@ namespace GOBA
                     CastPoint = abilityOwner.Transform.position + new Vector3(10, 10, 10),
                     //UnitsReferences = new NetworkBehaviourReference [] { _selectedUnits[0].NetworkBehaviour }
                 };
+            }
+
+            if (ability is LightningStrikeSolo)
+            {
+                var enemy = DIContainer.EntityManager.GetUnits().FirstOrDefault(x => x.GetTeam() != abilityOwner.GetTeam() && x.IsDead() == false);
+                if (enemy == default)
+                {
+                    MyLogger.Log("wrong target");
+                    return;
+                }
+
+
+                castData.CastPoint = enemy.Transform.position;
+                castData.TargetEntityId = enemy.EntityId;
             }
 
             MainCommandSender.Instance.UseAbility(_selectedUnits[0], ability.AbilityId, castData);

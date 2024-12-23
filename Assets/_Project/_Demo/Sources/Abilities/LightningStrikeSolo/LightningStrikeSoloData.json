@@ -1,0 +1,16 @@
+{
+	"Id": 2,
+	"Name": "LightningStrikeSolo",
+	"PrefabName": "LightningStrikeSoloAbility",
+	"Data":{
+		"MaxLevel": 1,
+		"Cost": [25],
+		"Cooldown": [2],
+		"CastTime": 0,
+		"AbilityBehaviour": 4,
+		"AbilityUnitTargetType": 2,
+		"AbilityUnitTargetTeam": 8,
+		"Damage": [100],
+		"DamageType": 0,
+	}
+}

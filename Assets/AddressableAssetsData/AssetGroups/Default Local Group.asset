@@ -15,12 +15,6 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 08f46a1522201d0498e98fcf2117f5e1
   m_SerializeEntries:
-  - m_GUID: 34cc687bdbca11742ae74d3984b1e76d
-    m_Address: ErikaDef
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - unit
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3cec7fd021bf46a42bacc89ff8097eb4
     m_Address: fireball_vfx_test
     m_ReadOnly: 0
@@ -31,6 +25,12 @@ MonoBehaviour:
     m_Address: YBotIcon
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a03c17049e681a43abd2b54e9e6afb0
+    m_Address: LightningStrikeSoloData
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityData
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a865d1cb3b93674da10c9828f43eedb
     m_Address: YBotModel
@@ -61,6 +61,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e6de2300fd761f84a9169f496c573f2f
     m_Address: HeroTemplate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5714f4f27ceb5b4f943593aadfa691c
+    m_Address: LightningStrikeSoloAbility
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

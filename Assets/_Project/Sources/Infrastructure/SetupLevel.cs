@@ -106,8 +106,10 @@ namespace GOBA
 
                     var heroId = _usersSelectedHero[sessionUser.UserId];
                     var hero = await ServerFunctions.SpawnHero(heroId, team.Id, spawnPosition);
-                    var ability = ServerFunctions.AddAbilityToUnit("Fireball", hero);
-                    ability.SetLevel(1);
+                    var ability1 = ServerFunctions.AddAbilityToUnit("Fireball", hero);
+                    var ability2 = ServerFunctions.AddAbilityToUnit("LightningStrikeSolo", hero);
+                    ability1.SetLevel(1);
+                    ability2.SetLevel(1);
                     result.Add(sessionUser, hero);
                 }
                 positionOffset = Vector3.zero;
