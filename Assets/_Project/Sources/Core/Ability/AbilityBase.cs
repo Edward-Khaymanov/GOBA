@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace GOBA.CORE
         private CancellationTokenSource _cooldownCancellationSource;
 
         private NetworkVariable<int> _abilityId = new NetworkVariable<int>();
+        private NetworkVariable<FixedString4096Bytes> _abilityName = new NetworkVariable<FixedString4096Bytes>();
         private NetworkVariable<int> _ownerEntityId = new NetworkVariable<int>();
         private NetworkVariable<int> _level = new NetworkVariable<int>();
         private NetworkVariable<float> _cooldown = new NetworkVariable<float>();
@@ -34,6 +36,7 @@ namespace GOBA.CORE
         public virtual void Initialize(AbilityDefinition definition)
         {
             _abilityId.Value = definition.Id;
+            _abilityName.Value = definition.Name;
             _abilityDefinition.Value = definition;
         }
 
@@ -100,6 +103,11 @@ namespace GOBA.CORE
         public Vector3 GetCastPoint()
         {
             return _castData.CastPoint;
+        }
+
+        public string GetName()
+        {
+            return _abilityName.Value.ToString();
         }
 
         #region COOLDOWN
