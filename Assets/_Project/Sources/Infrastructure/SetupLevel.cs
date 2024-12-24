@@ -33,8 +33,9 @@ namespace GOBA
             await abilityProvider.Initialize(addressablesProvider);
             var unitAssetProvider = new UnitAssetProvider();
             unitAssetProvider.Initialize(addressablesProvider);
+            var particleManager = new ParticleManager(addressablesProvider);
 
-            ServerFunctions.Init(DIContainer.EntityManager, null, projectileManager, projectileProvider, abilityProvider, addressablesProvider, unitAssetProvider);
+            ServerFunctions.Init(DIContainer.EntityManager, particleManager, projectileManager, projectileProvider, abilityProvider, addressablesProvider, unitAssetProvider);
             await Setup(lobbyData, isTest);
         }
 

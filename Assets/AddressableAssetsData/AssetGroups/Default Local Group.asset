@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 08f46a1522201d0498e98fcf2117f5e1
   m_SerializeEntries:
+  - m_GUID: 064210ec278ea1c4fbc50e9fdcb5f71c
+    m_Address: ParticleWrapper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3cec7fd021bf46a42bacc89ff8097eb4
     m_Address: fireball_vfx_test
     m_ReadOnly: 0
