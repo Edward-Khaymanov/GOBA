@@ -1,5 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using GOBA.CORE;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -18,9 +20,9 @@ namespace GOBA
         private static IUnitAssetProvider _unitAssetProvider;
 
         public static void Init(
-            IEntityManager entityManager, 
-            IParticleManager particleManager, 
-            IProjectileManager projectileManager, 
+            IEntityManager entityManager,
+            IParticleManager particleManager,
+            IProjectileManager projectileManager,
             IProjectileProvider projectileProvider,
             IAbilityProvider abilityProvider,
             IResourceProvider resourceProvider,
@@ -76,7 +78,12 @@ namespace GOBA
             return hero;
         }
 
-        public static void ApplyDamage(IUnit target, IUnit attacker, float damage, DamageType damageType, AbilityBase ability = default)
+        public static void ApplyDamage(
+            IUnit target,
+            IUnit attacker,
+            float damage,
+            DamageType damageType,
+            AbilityBase ability = default)
         {
             var resistMultiplier = 0f;
             damage = Mathf.Abs(damage);
@@ -89,6 +96,62 @@ namespace GOBA
                 target.Kill();
                 //log kill 
             }
+        }
+
+        public static IEnumerable<IUnit> FindUnits(
+            int teamId,
+            UnitTargetTeam teamFilter = UnitTargetTeam.ALL,
+            UnitTargetType typeFilter = UnitTargetType.ALL)
+        {
+            var allUnits = _entityManager.GetUnits();
+            var filtredUnits = FilterByTeam(allUnits, teamId, teamFilter);
+            filtredUnits = FilterByType(filtredUnits, typeFilter);
+            filtredUnits = FilterByFlags(filtredUnits);
+
+            return filtredUnits;
+        }
+
+        private static IEnumerable<IUnit> FilterByTeam(IEnumerable<IUnit> unitList, int teamId, UnitTargetTeam teamFilter)
+        {
+            var result = new List<IUnit>();
+            if (teamFilter.HasFlag(UnitTargetTeam.ENEMY))
+            {
+                result.AddRange(unitList.Where(x => x.GetTeam() != teamId));//later check by team manager
+            }
+
+            if (teamFilter.HasFlag(UnitTargetTeam.FRIENDLY))
+            {
+                result.AddRange(unitList.Where(x => x.GetTeam() == teamId));//later check by team manager
+            }
+
+            return result;
+        }
+
+        private static IEnumerable<IUnit> FilterByType(IEnumerable<IUnit> unitList, UnitTargetType typeFilter)
+        {
+            var result = new List<IUnit>();
+
+            if (typeFilter.HasFlag(UnitTargetType.ALL))
+            {
+                return unitList;
+            }
+
+            if (typeFilter.HasFlag(UnitTargetType.BASIC))
+            {
+                result.AddRange(unitList.Where(x => x is IUnit));
+            }
+
+            if (typeFilter.HasFlag(UnitTargetType.HERO))
+            {
+                result.AddRange(unitList.Where(x => x is IHero));
+            }
+
+            return result;
+        }
+
+        private static IEnumerable<IUnit> FilterByFlags(IEnumerable<IUnit> unitList)
+        {
+            return unitList.Where(x => x.IsDead() == false);
         }
     }
 }
