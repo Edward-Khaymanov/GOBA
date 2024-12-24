@@ -2,15 +2,15 @@
 	"Id": 2,
 	"Name": "LightningStrikeSolo",
 	"PrefabName": "LightningStrikeSoloAbility",
-	"Data":{
+	"Data": {
 		"MaxLevel": 1,
-		"Cost": [25],
-		"Cooldown": [2],
+		"Cost": [ 25 ],
+		"Cooldown": [ 2 ],
 		"CastTime": 0,
-		"AbilityBehaviour": 4,
-		"AbilityUnitTargetType": 2,
-		"AbilityUnitTargetTeam": 8,
-		"Damage": [100],
+		"AbilityBehaviour": 1,
+		"UnitTargetType": 2,
+		"UnitTargetTeam": 2,
+		"Damage": [ 100 ],
 		"DamageType": 0,
 		"ParticleName": "VFX_Zap_02_Blue"
 	}

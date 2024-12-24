@@ -70,14 +70,14 @@ namespace GOBA.CORE
             return GetDefinitionData<AbilityBehaviour>("AbilityBehaviour");
         }
 
-        public AbilityUnitTargetType GetTargetType()
+        public UnitTargetType GetTargetType()
         {
-            return GetDefinitionData<AbilityUnitTargetType>("AbilityUnitTargetType");
+            return GetDefinitionData<UnitTargetType>("UnitTargetType");
         }
 
-        public AbilityUnitTargetTeam GetTargetTeam()
+        public UnitTargetTeam GetTargetTeam()
         {
-            return GetDefinitionData<AbilityUnitTargetTeam>("AbilityUnitTargetTeam");
+            return GetDefinitionData<UnitTargetTeam>("UnitTargetTeam");
         }
 
         public IUnit GetOwner()

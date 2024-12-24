@@ -3,7 +3,7 @@
 namespace GOBA.CORE
 {
     [Flags]
-    public enum AbilityUnitTargetFlags
+    public enum UnitTargetFlags
     {
         DOTA_UNIT_TARGET_FLAG_NONE = 0,
         DOTA_UNIT_TARGET_FLAG_RANGED_ONLY = 2,
