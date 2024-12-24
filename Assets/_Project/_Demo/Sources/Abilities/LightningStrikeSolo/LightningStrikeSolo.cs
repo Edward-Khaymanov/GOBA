@@ -12,12 +12,12 @@ namespace GOBA.DEMO1
         {
             var owner = GetOwner();
             var target = GetCastTarget();
-            //var particleName = GetDefinitionData<string>("ParticleName");
+            var particleName = GetDefinitionData<string>("ParticleName");
             var damageType = (DamageType)GetDefinitionData<int>("DamageType");
             var damageList = GetDefinitionData<List<float>>("Damage");
             var damage = damageList[GetLevel() - 1];
 
-            //ParticleManager.CreateParticle(particleName, target.Transform.position);
+            ParticleManager.CreateParticle(particleName, target.Transform.position);
             ServerFunctions.ApplyDamage(target, owner, damage, damageType, this);
         }
     }

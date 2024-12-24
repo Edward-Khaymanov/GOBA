@@ -12,5 +12,6 @@
 		"AbilityUnitTargetTeam": 8,
 		"Damage": [100],
 		"DamageType": 0,
+		"ParticleName": "VFX_Zap_02_Blue"
 	}
 }

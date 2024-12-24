@@ -31,6 +31,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 548d2f6da866f804ebcda255258bd052
+    m_Address: VFX_Zap_02_Blue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a03c17049e681a43abd2b54e9e6afb0
     m_Address: LightningStrikeSoloData
     m_ReadOnly: 0
