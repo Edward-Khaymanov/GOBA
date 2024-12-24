@@ -60,7 +60,7 @@ namespace GOBA
         {
             var heroAsset = _unitAssetProvider.GetHero(heroId);
             var heroTemplate = _resourceProvider.LoadByKey<GameObject>(HERO_TEMPLATE_KEY);
-            var heroModelTemplate = _resourceProvider.LoadByKey<GameObject>(heroAsset.ModelKey).GetComponent<UnitModel>();
+            var heroModelTemplate = _resourceProvider.LoadByKey<UnitModel>(heroAsset.ModelKey);
             var hero = GameObject.Instantiate(heroTemplate, position, Quaternion.identity).GetComponent<IHero>();
             var heroModel = GameObject.Instantiate(heroModelTemplate, Vector3.zero, Quaternion.identity);
 

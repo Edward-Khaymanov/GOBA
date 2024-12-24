@@ -31,7 +31,7 @@ namespace GOBA
 
         public AbilityBase GetAbilityTemplate(string prefabName)
         {
-            return _resourceProvider.LoadByKey<GameObject>(prefabName).GetComponent<AbilityBase>();
+            return _resourceProvider.LoadByKey<AbilityBase>(prefabName);
         }
     }
 }

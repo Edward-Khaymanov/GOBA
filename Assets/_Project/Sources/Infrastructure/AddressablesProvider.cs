@@ -1,5 +1,7 @@
 ﻿using GOBA.CORE;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceLocations;
 
@@ -26,6 +28,20 @@ namespace GOBA
         }
 
         public T LoadByKey<T>(object key)
+        {
+            if (typeof(T).IsSubclassOf(typeof(Component)))
+            {
+                var gameObject = LoadByKeyInternal<GameObject>(key);
+                return gameObject.GetComponent<T>();
+            }
+            else
+            {
+                var obj = LoadByKeyInternal<T>(key);
+                return obj;
+            }
+        }
+
+        private T LoadByKeyInternal<T>(object key)
         {
             var handle = Addressables.LoadAssetAsync<T>(key);
             handle.WaitForCompletion();

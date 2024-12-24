@@ -15,7 +15,7 @@ namespace GOBA
         {
             _resourceProvider = resourceProvider;
             _nameTemplate = new Dictionary<string, GameObject>();
-            _abilityProjectileWrapperTemplate = _resourceProvider.LoadByKey<GameObject>("AbilityProjectileWrapper").GetComponent<AbilityProjectile>();
+            _abilityProjectileWrapperTemplate = _resourceProvider.LoadByKey<AbilityProjectile>("AbilityProjectileWrapper");
             var locations = _resourceProvider.GetLocations<GameObject>("AbilityProjectile");
 
             foreach (var location in locations)
