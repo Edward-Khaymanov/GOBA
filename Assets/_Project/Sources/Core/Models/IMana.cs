@@ -16,5 +16,7 @@
         //public void GiveMana(float amount);
         public float GetMana();
         public float GetMaxMana();
+        public void SetMana(float amount);
+        public void SetMaxMana(float amount);
     }
 }

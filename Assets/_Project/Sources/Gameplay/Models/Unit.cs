@@ -15,10 +15,10 @@ namespace GOBA
 
         //private float _manaBase = 100f;
         private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
-        private NetworkVariable<float> _manaCurrent = new NetworkVariable<float>(400f);
-        private NetworkVariable<float> _manaMax = new NetworkVariable<float>(1000f);
-        private NetworkVariable<float> _healthCurrent = new NetworkVariable<float>(300f);
-        private NetworkVariable<float> _healthMax = new NetworkVariable<float>(500f);
+        private NetworkVariable<float> _manaCurrent = new NetworkVariable<float>();
+        private NetworkVariable<float> _manaMax = new NetworkVariable<float>();
+        private NetworkVariable<float> _healthCurrent = new NetworkVariable<float>();
+        private NetworkVariable<float> _healthMax = new NetworkVariable<float>();
         private NetworkVariable<int> _teamId = new NetworkVariable<int>(-1);
 
 
@@ -99,16 +99,28 @@ namespace GOBA
             return _teamId.Value;
         }
 
-        public void SetHealth(float health)
+        public void SetHealth(float amount)
         {
-            health = Mathf.Max(health, 0);
-            _healthCurrent.Value = health;
+            amount = Mathf.Clamp(amount, 0, _healthMax.Value);
+            _healthCurrent.Value = amount;
         }
 
-        public void SetMaxHealth(float health)
+        public void SetMaxHealth(float amount)
         {
-            health = Mathf.Max(health, 0);
-            _healthMax.Value = health;
+            amount = Mathf.Max(amount, 0);
+            _healthMax.Value = amount;
+        }
+
+        public void SetMana(float amount)
+        {
+            amount = Mathf.Clamp(amount, 0, _manaMax.Value);
+            _manaCurrent.Value = amount;
+        }
+
+        public void SetMaxMana(float amount)
+        {
+            amount = Mathf.Max(amount, 0);
+            _manaMax.Value = amount;
         }
     }
 }

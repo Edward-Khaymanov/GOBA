@@ -4,8 +4,8 @@
     {
         public float GetHealth();
         public float GetMaxHealth();
-        public void SetHealth(float health);
-        public void SetMaxHealth(float health);
+        public void SetHealth(float amount);
+        public void SetMaxHealth(float amount);
         public bool IsDead();
         public void Kill();
     }
