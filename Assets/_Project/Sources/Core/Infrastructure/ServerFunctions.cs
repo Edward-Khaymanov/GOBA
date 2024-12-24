@@ -65,6 +65,10 @@ namespace GOBA
             var heroModel = GameObject.Instantiate(heroModelTemplate, Vector3.zero, Quaternion.identity);
 
             hero.SetTeam(teamId);
+            hero.SetMaxHealth(2000);
+            hero.SetHealth(2000);
+            hero.SetMaxMana(1000);
+            hero.SetMana(1000);
             hero.NetworkBehaviour.NetworkObject.Spawn();
             heroModel.GetComponent<NetworkObject>().Spawn();
             heroModel.GetComponent<NetworkObject>().TrySetParent(hero.NetworkBehaviour.NetworkObject, false);
