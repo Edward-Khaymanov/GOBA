@@ -36,6 +36,17 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 644633d720c44ad4eae866bf2eec0ffe
+    m_Address: LightningStrikeAllAbility
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72e410d8056d4a44797e8f7010b323a8
+    m_Address: LightningStrikeAllData
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a03c17049e681a43abd2b54e9e6afb0
     m_Address: LightningStrikeSoloData
     m_ReadOnly: 0

@@ -1,6 +1,6 @@
 {
     "name": "GOBA.DEMO1",
-    "rootNamespace": "",
+    "rootNamespace": "GOBA.DEMO1",
     "references": [
         "GUID:1491147abca9d7d4bb7105af628b223e",
         "GUID:f0e56883966da374fa8608f986607e85",

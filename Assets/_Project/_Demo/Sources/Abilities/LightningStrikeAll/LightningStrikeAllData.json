@@ -1,0 +1,17 @@
+{
+	"Id": 3,
+	"Name": "LightningStrikeAll",
+	"PrefabName": "LightningStrikeAllAbility",
+	"Data": {
+		"MaxLevel": 1,
+		"Cost": [ 100 ],
+		"Cooldown": [ 2 ],
+		"CastTime": 0,
+		"AbilityBehaviour": 1,
+		"UnitTargetType": 2,
+		"UnitTargetTeam": 2,
+		"Damage": [ 200 ],
+		"DamageType": 0,
+		"ParticleName": "VFX_Zap_02_Blue"
+	}
+}
