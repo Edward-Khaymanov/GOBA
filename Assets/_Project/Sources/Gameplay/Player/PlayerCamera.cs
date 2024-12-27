@@ -5,21 +5,21 @@ namespace GOBA
 {
     public class PlayerCamera : MonoBehaviour
     {
-        //при проходе по склонам ограничение высоты работает неправильно
-        [SerializeField] private float _heightScale;
-        [SerializeField] private float _minHeight;
-        [SerializeField] private float _maxHeight;
+        [SerializeField, Min(MIN_OFFSET_DISTANCE)] private float _offsetDistance;
+        [SerializeField] private float _smoothTime;
+        [SerializeField] private Camera _camera;
 
         private Transform _target;
-        private Camera _camera;
-        private Vector3 _offset;
         private bool _isTracking;
+        private float _rotationX = 70f;
+
+        private const float MIN_OFFSET_DISTANCE = 10f;
 
         public Camera Camera => _camera;
 
         public void Init()
         {
-            _camera = GetComponent<Camera>();
+            SetRotation(new Vector3(_rotationX, 0, 0));
         }
 
         private void LateUpdate()
@@ -27,13 +27,15 @@ namespace GOBA
             if (_isTracking == false)
                 return;
 
-            transform.position = _target.position + _offset;
+            if (_offsetDistance < MIN_OFFSET_DISTANCE)
+                _offsetDistance = MIN_OFFSET_DISTANCE;
+
+            transform.position = Vector3.Lerp(transform.position, GetCameraCenterPosition(_target.position), _smoothTime);
         }
 
         public void Track(Transform target)
         {
             _target = target;
-            SetOffset(target.position);
             _isTracking = true;
         }
 
@@ -42,34 +44,20 @@ namespace GOBA
             _isTracking = false;
         }
 
-        public void SetOffset(Vector3 targetPosition)
-        {
-            transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
-            _offset = transform.position - targetPosition;
-        }
-
-        public void ChangeHeight(float direction)
-        {
-            var offsetHeight = direction * _heightScale;
-            var newPosition = transform.position + new Vector3(0, offsetHeight, 0);
-
-            if (newPosition.y < _minHeight)
-                return;
-
-            if (newPosition.y > _maxHeight)
-                return;
-
-            transform.position = newPosition;
-            _offset.y += offsetHeight;
-        }
-
         public void CenterCameraOnUnit(IUnit unit)
         {
-            var playerCameraPosition = unit.Transform.position;
-            playerCameraPosition.y += 20;
-            playerCameraPosition.z -= 10;
-            transform.position = playerCameraPosition;
+            Untrack();
+            transform.position = GetCameraCenterPosition(unit.Transform.position);
         }
 
+        public void SetRotation(Vector3 rotation)
+        {
+            transform.rotation = Quaternion.Euler(rotation);
+        }
+
+        public Vector3 GetCameraCenterPosition(Vector3 position)
+        {
+            return position + (-_camera.transform.forward * _offsetDistance);
+        }
     }
 }

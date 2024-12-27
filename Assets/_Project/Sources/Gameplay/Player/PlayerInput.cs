@@ -57,10 +57,6 @@ namespace GOBA
 
         private void HandleCamera()
         {
-            MyLogger.Log("player input HandleCamera");
-            if (Input.mouseScrollDelta.y != 0)
-                _playerCamera.ChangeHeight(Input.mouseScrollDelta.y);
-
             if (Input.GetKeyDown(KeyCode.F1))
                 _playerCamera.Track(_selectedUnits[0].Transform);
 

@@ -2448,9 +2448,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bf5c39407623d041b4cd4954138b805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heightScale: 1
-  _minHeight: 50
-  _maxHeight: 100
+  _offsetDistance: 30
+  _smoothTime: 0.1
+  _camera: {fileID: 3488405411131212328}
 --- !u!114 &5391585461140344714
 MonoBehaviour:
   m_ObjectHideFlags: 0
