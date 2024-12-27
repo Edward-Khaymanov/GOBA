@@ -20,19 +20,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3cec7fd021bf46a42bacc89ff8097eb4
-    m_Address: fireball_vfx_test
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - AbilityProjectile
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 52fc3db4830a3c0489c56b260cfec17f
     m_Address: YBotIcon
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 548d2f6da866f804ebcda255258bd052
-    m_Address: VFX_Zap_02_Blue
+  - m_GUID: 5c74e6f2694fe1a4f9d50f0a32d71a05
+    m_Address: VFX
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

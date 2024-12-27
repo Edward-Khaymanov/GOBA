@@ -14832,7 +14832,7 @@ GameObject:
   - component: {fileID: 5861850483175589971}
   - component: {fileID: 5751800605600254821}
   m_Layer: 0
-  m_Name: VFX_Zap_02_Blue
+  m_Name: VFX_LightningStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

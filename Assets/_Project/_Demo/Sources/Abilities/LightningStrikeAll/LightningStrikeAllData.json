@@ -12,6 +12,6 @@
 		"UnitTargetTeam": 2,
 		"Damage": [ 200 ],
 		"DamageType": 0,
-		"ParticleName": "VFX_Zap_02_Blue"
+		"ParticleName": "VFX/VFX_LightningStrike.prefab"
 	}
 }
