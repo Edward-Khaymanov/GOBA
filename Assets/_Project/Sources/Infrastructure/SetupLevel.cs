@@ -18,7 +18,7 @@ namespace GOBA
         [SerializeField] public PlayerController _playerControllerTemplate;
 
         private readonly Dictionary<UserID, PlayerController> _usersPlayers = new();
-        private Dictionary<UserID, int> _usersSelectedHero = new();
+        private readonly Dictionary<UserID, int> _usersSelectedHero = new();
 
         public string CurrentTime => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
 
@@ -107,12 +107,15 @@ namespace GOBA
 
                     var heroId = _usersSelectedHero[sessionUser.UserId];
                     var hero = await ServerFunctions.SpawnHero(heroId, team.Id, spawnPosition);
-                    var ability1 = ServerFunctions.AddAbilityToUnit("Fireball", hero);
-                    var ability2 = ServerFunctions.AddAbilityToUnit("LightningStrikeSolo", hero);
-                    var ability3 = ServerFunctions.AddAbilityToUnit("LightningStrikeAll", hero);
-                    ability1.SetLevel(1);
-                    ability2.SetLevel(1);
-                    ability3.SetLevel(1);
+
+                    var lightningStrikeSolo = ServerFunctions.AddAbilityToUnit("LightningStrikeSolo", hero);
+                    var lightningStrikeAll = ServerFunctions.AddAbilityToUnit("LightningStrikeAll", hero);
+                    var healSolo = ServerFunctions.AddAbilityToUnit("HealSolo", hero);
+
+                    lightningStrikeSolo.SetLevel(1);
+                    lightningStrikeAll.SetLevel(1);
+                    healSolo.SetLevel(1);
+
                     result.Add(sessionUser, hero);
                 }
                 positionOffset = Vector3.zero;

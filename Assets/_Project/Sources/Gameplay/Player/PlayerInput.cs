@@ -13,7 +13,7 @@ namespace GOBA
         private bool _enabled;
         private int _mouseHitsCount;
         private RaycastHit[] _mouseHits;
-        private IList<IUnit> _selectedUnits;//unit group в дальнейшем?
+        private IList<IUnit> _selectedUnits;
         private PlayerCamera _playerCamera;
 
         public event Action<IList<IUnit>> UnitsSelected;
@@ -148,18 +148,8 @@ namespace GOBA
 
         private async UniTaskVoid ActivateAbility(AbilityBase ability)
         {
-            //выброр цели
             var castData = new AbilityCastData();
             var abilityOwner = ability.GetOwner();
-
-            if (ability is FireBall)
-            {
-                castData = new AbilityCastData()
-                {
-                    CastPoint = abilityOwner.Transform.position + new Vector3(10, 10, 10),
-                    //UnitsReferences = new NetworkBehaviourReference [] { _selectedUnits[0].NetworkBehaviour }
-                };
-            }
 
             if (ability is LightningStrikeSolo)
             {
@@ -170,6 +160,18 @@ namespace GOBA
                     return;
                 }
 
+                castData.CastPoint = enemy.Transform.position;
+                castData.TargetEntityId = enemy.EntityId;
+            }
+
+            if (ability is HealSolo)
+            {
+                var enemy = DIContainer.EntityManager.GetUnits().FirstOrDefault(x => x.GetTeam() != abilityOwner.GetTeam() && x.IsDead() == false);
+                if (enemy == default)
+                {
+                    MyLogger.Log("wrong target");
+                    return;
+                }
 
                 castData.CastPoint = enemy.Transform.position;
                 castData.TargetEntityId = enemy.EntityId;

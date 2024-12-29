@@ -57,8 +57,19 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 972ed7afa8cf00a4fa69522ef48ac0bf
+    m_Address: HealSoloData
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AbilityData
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a5169c6b5d67a6446b1dddf19da5ddc0
     m_Address: AbilityProjectileWrapper
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab2a6d491dec04941861591562958d78
+    m_Address: HealSoloAbility
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
