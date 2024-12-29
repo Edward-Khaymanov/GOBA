@@ -86,7 +86,7 @@ namespace GOBA
             AbilityBase ability = default)
         {
             var resistMultiplier = 0f;
-            damage = Mathf.Abs(damage);
+            damage = Mathf.Max(damage, 0);
             damage = damage * (1 - resistMultiplier);
             var newHealth = target.GetHealth() - damage;
             target.SetHealth(newHealth);
@@ -109,6 +109,14 @@ namespace GOBA
             filtredUnits = FilterByFlags(filtredUnits);
 
             return filtredUnits;
+        }
+
+
+        public static void Heal(IUnit target, float amount)
+        {
+            amount = Mathf.Max(amount, 0);
+            var newHealth = target.GetHealth() + amount;
+            target.SetHealth(newHealth);
         }
 
         private static IEnumerable<IUnit> FilterByTeam(IEnumerable<IUnit> unitList, int teamId, UnitTargetTeam teamFilter)
