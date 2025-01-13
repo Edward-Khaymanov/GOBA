@@ -18,4 +18,5 @@ A multiplayer game similar to dota 2 or warcraft 3 custom games. Currently in Pr
 - [ ] Custom games system
 - [ ] Basic UI
 - [ ] Lobby system
+- [ ] Add dependency injection 
 - [ ] etc
